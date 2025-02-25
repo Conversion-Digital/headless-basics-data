@@ -1,0 +1,43 @@
+{
+    "output": {
+        "filePath": "repomix-output.xml",
+        "style": "xml",
+        "headerText": "Custom header information for the packed file.",
+        "removeComments": true,
+        "removeEmptyLines": true,
+        "showLineNumbers": false,
+        "copyToClipboard": false,
+        "topFilesLength": 5,
+        "includeEmptyDirectories": false,
+        "instructionFilePath": "repomix-base.prompt"
+    },
+    "include": [
+        "**/*"
+    ],
+    "ignore": {
+        "useGitignore": true,
+        "useDefaultPatterns": true,
+        "customPatterns": [
+            ".github",
+            ".vscode",
+            ".gitignore",
+            "*.yml",
+            "repomix-base.prompt",
+            "repomix-output.xml",
+            ".storybook",
+            ".idea",
+            "public",
+            "node_modules",
+            "dist",
+            "repomix.config.json",
+            "package-lock.json",
+            ".prettierrc.json",
+            "babel.config.cjs",
+            "jest.config.cjs",
+            "tsconfig.tsbuildinfo"
+         ]
+    },
+    "security": {
+        "enableSecurityCheck": true
+    }
+}

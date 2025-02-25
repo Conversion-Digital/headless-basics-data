@@ -1,0 +1,38 @@
+
+> @conversiondigital/component-lib@0.2.10 build-storybook
+> cross-env STORYBOOK_ENV=storybook storybook build --output-dir C:\Users\timea\AppData\Local\Temp\chromatic--40524-y36GcL0g9sO0
+
+@storybook/cli v7.5.3
+
+info => Cleaning outputDir: C:\Users\timea\AppData\Local\Temp\chromatic--40524-y36GcL0g9sO0
+info => Loading presets
+info => Building manager..
+info => Manager built (85 ms)
+info => Building preview..
+Babel Environment: storybook
+info => Copying static files: C:\@conversiondigital/AI\component-lib\node_modules\@storybook\manager\static at C:\Users\timea\AppData\Local\Temp\chromatic--40524-y36GcL0g9sO0\sb-common-assets
+WARN No story files found for the specified pattern: src\components\**\*.mdx
+info Addon-docs: using MDX2
+info => Using implicit CSS loaders
+info => Using default Webpack5 setup
+info => Copying static files: C:\@conversiondigital/AI\component-lib\assets at C:\Users\timea\AppData\Local\Temp\chromatic--40524-y36GcL0g9sO0\assets
+WARN Critical dependency: require function is used in a way in which dependencies cannot be statically extracted
+WARN Critical dependency: require function is used in a way in which dependencies cannot be statically extracted
+WARN asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+WARN This can impact web performance.
+WARN Assets: 
+WARN   main.859a1a1e.iframe.bundle.js (246 KiB)
+WARN   667.ddc2c8bf.iframe.bundle.js (298 KiB)
+WARN   132.63fc6580.iframe.bundle.js (712 KiB)
+WARN   71.491f7152.iframe.bundle.js (583 KiB)
+WARN   309.522d6920.iframe.bundle.js (312 KiB)
+WARN   27.60c10ffc.iframe.bundle.js (835 KiB)
+WARN entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+WARN Entrypoints:
+WARN   main (1.06 MiB)
+WARN       runtime~main.1dbc7a8a.iframe.bundle.js
+WARN       27.60c10ffc.iframe.bundle.js
+WARN       main.859a1a1e.iframe.bundle.js
+WARN 
+info => Preview built (11 s)
+info => Output directory: C:\Users\timea\AppData\Local\Temp\chromatic--40524-y36GcL0g9sO0
