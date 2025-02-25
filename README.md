@@ -1,6 +1,6 @@
 # Longform README
 
-Welcome to the **cd-headless-data** project! This repository provides a set of TypeScript modules, services, utilities, and interfaces designed for a headless CMS approach. The code aims to support a flexible, multi-site setup, offering features like content rendering, SEO handling, language-based routing, and more. Below is a comprehensive overview of the project and its underlying code.
+Welcome to the **headless-basics-data** project! This repository provides a set of TypeScript modules, services, utilities, and interfaces designed for a headless CMS approach. The code aims to support a flexible, multi-site setup, offering features like content rendering, SEO handling, language-based routing, and more. Below is a comprehensive overview of the project and its underlying code.
 
 ---
 
@@ -21,7 +21,7 @@ Welcome to the **cd-headless-data** project! This repository provides a set of T
 
 ## Overview
 
-The **cd-headless-data** project aims to provide reusable building blocks for a headless CMS ecosystem. Here, youU+0060ll find code to:
+The **headless-basics-data** project aims to provide reusable building blocks for a headless CMS ecosystem. Here, youU+0060ll find code to:
 
 - **Fetch** data from various CMS platforms (currently focusing on Umbraco Heartcore, Kontent, and Contentful).  
 - **Render** content for pages, sub-components, and dynamic data using a multi-site structure.  
@@ -129,20 +129,20 @@ The build artifacts will be placed into the **dist/** directory, including **ind
 
 ## Usage
 
-The **@conversiondigital/cd-headless-data** package is typically used in Next.js or Node.js applications:
+The **@conversiondigital/headless-basics-data** package is typically used in Next.js or Node.js applications:
 
 1. **Install** via your package manager once published:
    ```
-   npm install @conversiondigital/cd-headless-data
+   npm install @conversiondigital/headless-basics-data
    ```
    or
    ```
-   pnpm add @conversiondigital/cd-headless-data
+   pnpm add @conversiondigital/headless-basics-data
    ```
 2. **Import** what you need:
    ```
-   import { buildPageData } from U+0060@conversiondigital/cd-headless-dataU+0060;
-   import { processURLForNavigation } from U+0060@conversiondigital/cd-headless-dataU+0060;
+   import { buildPageData } from U+0060@conversiondigital/headless-basics-dataU+0060;
+   import { processURLForNavigation } from U+0060@conversiondigital/headless-basics-dataU+0060;
    ```
 3. **Configure** your multi-site or CMS settings, then call the relevant services to fetch data, build pages, or generate SEO metadata.
 

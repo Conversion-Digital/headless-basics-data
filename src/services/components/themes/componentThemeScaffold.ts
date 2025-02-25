@@ -8,8 +8,8 @@ const log = getLogger("services.components.themes.componentThemeScaffold");
 // async function testSitemapImport() {
 //   try {
 //     // @ts-ignore
-//     await import(`@conversiondigital/cd-headless-component-lib/src/theme/default/components/sitemap/heartcore-mapping`);
-//     log.info(`${logPrefix()} Successfully imported from @conversiondigital/cd-headless-component-lib/src/theme/default/components/sitemap/heartcore-mapping`);
+//     await import(`@conversiondigital/headless-basics-components/src/theme/default/components/sitemap/heartcore-mapping`);
+//     log.info(`${logPrefix()} Successfully imported from @conversiondigital/headless-basics-components/src/theme/default/components/sitemap/heartcore-mapping`);
 //   } catch (error) {
 //     if (error instanceof Error) {
 //       log.error(`${logPrefix()} Failed to import from sitemap: ${error.message}`);
@@ -95,12 +95,12 @@ async function retrieveSiteThemeVariables(siteTheme: string, identifier: string,
     switch (siteTheme) {
       case "deep-purple":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load variables`);
-        fallbackVarsModule = await import(`@conversiondigital/cd-headless-component-lib/src/theme/deep-purple/components/${identifier}/variables`);
+        fallbackVarsModule = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${identifier}/variables`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} == deep-purple loaded variables`);
         break;
       case "light-blue":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} MATCH - attempting to load `);
-        fallbackVarsModule = await import(`@conversiondigital/cd-headless-component-lib/src/theme/light-blue/components/${identifier}/variables`);
+        fallbackVarsModule = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${identifier}/variables`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} loaded variables module`);
     }
 
@@ -116,7 +116,7 @@ async function retrieveSiteThemeVariables(siteTheme: string, identifier: string,
 
 async function retrieveDefaultVariables(identifier: string, variables: (pageAndComponentCombo: PageAndSingleComponentDetails) => {}) {
   try {
-    const fallbackVarsModule = await import(`@conversiondigital/cd-headless-component-lib/src/theme/default/components/${identifier}/variables`);
+    const fallbackVarsModule = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/${identifier}/variables`);
     if (fallbackVarsModule && fallbackVarsModule.variables) {
       variables = fallbackVarsModule.variables;
     }
@@ -148,12 +148,12 @@ async function retrieveSiteThemeQuery(siteTheme: string, identifier: string, que
     switch (siteTheme) {
       case "deep-purple":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load query`);
-        queryModule = await import(`@conversiondigital/cd-headless-component-lib/src/theme/deep-purple/components/${identifier}/${cmsPrefix}-query`);
+        queryModule = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${identifier}/${cmsPrefix}-query`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} == deep-purple loaded query`);
         break;
       case "light-blue":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} MATCH - attempting to load `);
-        queryModule = await import(`@conversiondigital/cd-headless-component-lib/src/theme/light-blue/components/${identifier}/${cmsPrefix}-query`);
+        queryModule = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${identifier}/${cmsPrefix}-query`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} loaded query module`);
     }
   } catch (fallbackError) {
@@ -165,7 +165,7 @@ async function retrieveSiteThemeQuery(siteTheme: string, identifier: string, que
 
 async function retrieveDefaultQuery(queryModule: any, identifier: string, cmsPrefix: string, componentName: string) {
   try {
-    queryModule = await import(`@conversiondigital/cd-headless-component-lib/src/theme/default/components/${identifier}/${cmsPrefix}-query`);
+    queryModule = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/${identifier}/${cmsPrefix}-query`);
   } catch (fallbackError) {
     log.error(`${logPrefix()}[${identifier}] Default Theme -- Fallback import failed for query - ${(fallbackError as Error)?.message}`);
     throw new Error(`Could not import query for component '${componentName}'`);
@@ -195,16 +195,16 @@ async function retrieveSiteThemeMapping(siteTheme: string, identifier: string, m
     switch (siteTheme) {
       case "deep-purple":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load mapping`);
-        mappingModule = await import(`@conversiondigital/cd-headless-component-lib/src/theme/deep-purple/components/${identifier}/${cmsPrefix}-mapping`);
+        mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${identifier}/${cmsPrefix}-mapping`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} == deep-purple loaded`);
         break;
       case "light-blue":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} MATCH - attempting to load mapping`);
-        mappingModule = await import(`@conversiondigital/cd-headless-component-lib/src/theme/light-blue/components/${identifier}/${cmsPrefix}-mapping`);
+        mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${identifier}/${cmsPrefix}-mapping`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} loaded mapping module`);
         break;
     }
-    // mappingModule = await import(`@conversiondigital/cd-headless-component-lib/src/theme/${siteTheme}/components/${identifier}/${cmsPrefix}-mapping`);
+    // mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/${siteTheme}/components/${identifier}/${cmsPrefix}-mapping`);
   } catch (fallbackError) {
     log.trace(`${logPrefix()}[${identifier}] Site Theme ::: ${siteTheme} -- Fallback import failed for mapping - ${(fallbackError as Error)?.message}`);
     mappingModule = await retrieveDefaultMapping(mappingModule, identifier, cmsPrefix, componentName);
@@ -215,7 +215,7 @@ async function retrieveSiteThemeMapping(siteTheme: string, identifier: string, m
 async function retrieveDefaultMapping(mappingModule: any, identifier: string, cmsPrefix: string, componentName: string) {
   try {
     log.trace(`${logPrefix()}[${identifier}][Default] -- Fallback import failed. Attempting to load default mapping`);
-    mappingModule = await import(`@conversiondigital/cd-headless-component-lib/src/theme/default/components/${identifier}/${cmsPrefix}-mapping`);
+    mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/${identifier}/${cmsPrefix}-mapping`);
   } catch (fallbackError) {
     log.error(`${logPrefix()}[${identifier}][Default] -- Fallback import failed for mapping - ${(fallbackError as Error)?.message}`);
     throw new Error(`Could not import mapping for component '${componentName}'`);

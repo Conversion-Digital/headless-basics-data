@@ -12,33 +12,33 @@ export const log = getLogger("headless-data-lib.services.data.graphqlDataService
 //   const identifier = "sitemap";
 
 //   const pathsToTest = [
-//     // `@conversiondigital/cd-headless-component-lib/theme/default/components/${identifier}`,
-//     `@conversiondigital/cd-headless-component-lib/src/theme/default/components/${identifier}`,
-//     // `@conversiondigital/cd-headless-component-lib/dist/theme/default/components/${identifier}`
+//     // `@conversiondigital/headless-basics-components/theme/default/components/${identifier}`,
+//     `@conversiondigital/headless-basics-components/src/theme/default/components/${identifier}`,
+//     // `@conversiondigital/headless-basics-components/dist/theme/default/components/${identifier}`
 //   ];
 
 //   // try {
 //   //   // @ts-ignore
-//   //   const module = await import(`@conversiondigital/cd-headless-component-lib/dist/theme/default/components/sitemap`);
+//   //   const module = await import(`@conversiondigital/headless-basics-components/dist/theme/default/components/sitemap`);
 //   //   return module.default;
 //   // } catch (error) {
 //   //   if (error instanceof Error) {
-//   //     log.error(`${logPrefix()} 1 Failed to import from @conversiondigital/cd-headless-component-lib/dist/theme/default/components/sitemap: ${error.message}`);
+//   //     log.error(`${logPrefix()} 1 Failed to import from @conversiondigital/headless-basics-components/dist/theme/default/components/sitemap: ${error.message}`);
 //   //   } else {
-//   //     log.error(`${logPrefix()} 1a Failed to import from @conversiondigital/cd-headless-component-lib/dist/theme/default/components/sitemap:`, error);
+//   //     log.error(`${logPrefix()} 1a Failed to import from @conversiondigital/headless-basics-components/dist/theme/default/components/sitemap:`, error);
 //   //   }
 //   // }
 
 //   try {
 //     // @ts-ignore
-//     const module = await import(`@conversiondigital/cd-headless-component-lib/src/theme/default/components/sitemap`);
-//     log.trace(`${logPrefix()} Successfully imported from @conversiondigital/cd-headless-component-lib/src/theme/default/components/sitemap`);
+//     const module = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/sitemap`);
+//     log.trace(`${logPrefix()} Successfully imported from @conversiondigital/headless-basics-components/src/theme/default/components/sitemap`);
 //     const modulea = module.default;
 //   } catch (error) {
 //     if (error instanceof Error) {
-//       log.error(`${logPrefix()} 2 Failed to import from @conversiondigital/cd-headless-component-lib/src/theme/default/components/sitemap: ${error.message}`);
+//       log.error(`${logPrefix()} 2 Failed to import from @conversiondigital/headless-basics-components/src/theme/default/components/sitemap: ${error.message}`);
 //     } else {
-//       log.error(`${logPrefix()} 2a Failed to import from @conversiondigital/cd-headless-component-lib/src/theme/default/components/sitemap:`, error);
+//       log.error(`${logPrefix()} 2a Failed to import from @conversiondigital/headless-basics-components/src/theme/default/components/sitemap:`, error);
 //     }
 //   }
 
@@ -83,8 +83,8 @@ export async function resolveModuleFileLocation(
   // First attempt: /theme/${siteId}/components/<identifier>
   let primaryPath = `theme/${siteId}/components/${identifier}`;
   // Fallback path: package location
-  let siteThemefallbackPath = `@conversiondigital/cd-headless-component-lib/src/theme/${siteTheme}/components/${identifier}`;
-  let defaultFallbackPath = `@conversiondigital/cd-headless-component-lib/src/theme/default/components/${identifier}`;
+  let siteThemefallbackPath = `@conversiondigital/headless-basics-components/src/theme/${siteTheme}/components/${identifier}`;
+  let defaultFallbackPath = `@conversiondigital/headless-basics-components/src/theme/default/components/${identifier}`;
 
   details.matchingPath = primaryPath;
   details.failedToFind = true;
@@ -152,19 +152,19 @@ async function extractSiteTheme(details: DynamicFileModuleDetails, siteThemefall
   try { 
     
     //@ts-ignore
-    // const homepage = await import(`@conversiondigital/cd-headless-component-lib/src/theme/deep-purple/components/homepagev2body`).then((module) => module.default);
+    // const homepage = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/homepagev2body`).then((module) => module.default);
 
     // log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}] HOMEPAGE LOADED FINE`);
 
     switch(siteTheme){
       case "deep-purple":
         log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load ${siteThemefallbackPath}`);
-          details.moduleX = await import(`@conversiondigital/cd-headless-component-lib/src/theme/deep-purple/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+          details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
         log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == deep-purple loaded ${siteThemefallbackPath}`);
         break;
       case "light-blue":
         log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
-          details.moduleX = await import(`@conversiondigital/cd-headless-component-lib/src/theme/light-blue/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+          details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
         log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
     }      
     details.matchingPath = siteThemefallbackPath;
@@ -191,10 +191,10 @@ async function extractSiteTheme(details: DynamicFileModuleDetails, siteThemefall
  * @returns 
  */
 async function extractDefaultTheme(details: DynamicFileModuleDetails) {
-  const currentPath = `@conversiondigital/cd-headless-component-lib/src/theme/default/components/${details.identifier.toLowerCase()}`;
+  const currentPath = `@conversiondigital/headless-basics-components/src/theme/default/components/${details.identifier.toLowerCase()}`;
   try {
     log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][DEFAULT THEME][191] Attempting default theme detection: ${currentPath}`);
-    details.moduleX = await import(`@conversiondigital/cd-headless-component-lib/src/theme/default/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+    details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
     details.matchingPath = currentPath;
     log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][DEFAULT THEME][197] Default Theme loaded ${currentPath}`);
   } catch (fallbackError: unknown) {

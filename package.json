@@ -1,5 +1,5 @@
 {
-  "name": "@conversiondigital/cd-headless-data",
+  "name": "@conversiondigital/headless-basics-data",
   "type": "module",
   "main": "src/index.ts",
   "types": "dist/index.d.ts",

@@ -1,1 +1,1 @@
-declare module "@conversiondigital/cd-headless-data";
+declare module "@conversiondigital/headless-basics-data";
