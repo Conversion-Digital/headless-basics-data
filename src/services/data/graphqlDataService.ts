@@ -166,9 +166,12 @@ async function extractSiteTheme(details: DynamicFileModuleDetails, siteThemefall
         log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
           details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
         log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
+      case "default":
+        details = await extractDefaultTheme(details);
+        break;
     }      
     details.matchingPath = siteThemefallbackPath;
-    log.debug(`${logPrefix()}[${details.identifier.toLowerCase()}][FALLBACK] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
+    log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][FALLBACK] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
   } catch (fallbackError: unknown) {
     if (fallbackError instanceof Error) {
       log.trace(

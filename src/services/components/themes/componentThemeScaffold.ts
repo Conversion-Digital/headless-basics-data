@@ -165,10 +165,12 @@ async function retrieveSiteThemeQuery(siteTheme: string, identifier: string, que
 
 async function retrieveDefaultQuery(queryModule: any, identifier: string, cmsPrefix: string, componentName: string) {
   try {
+    log.trace(`${logPrefix()}[${identifier}] Default Theme -- Fallback import failed. Attempting to load default query ::: ${cmsPrefix}-query`);
     queryModule = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/${identifier}/${cmsPrefix}-query`);
+    log.trace(`${logPrefix()}[${identifier}] Default Theme -- query module loaded ::: @conversiondigital/headless-basics-components/src/theme/default/components/${identifier}/${cmsPrefix}-query`);
   } catch (fallbackError) {
     log.error(`${logPrefix()}[${identifier}] Default Theme -- Fallback import failed for query - ${(fallbackError as Error)?.message}`);
-    throw new Error(`Could not import query for component '${componentName}'`);
+    throw new Error(`Could not import query for component '${componentName}' ${cmsPrefix}-query`);
   }
   return queryModule;
 }
@@ -218,7 +220,7 @@ async function retrieveDefaultMapping(mappingModule: any, identifier: string, cm
     mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/${identifier}/${cmsPrefix}-mapping`);
   } catch (fallbackError) {
     log.error(`${logPrefix()}[${identifier}][Default] -- Fallback import failed for mapping - ${(fallbackError as Error)?.message}`);
-    throw new Error(`Could not import mapping for component '${componentName}'`);
+    throw new Error(`Could not import mapping for component '${componentName}' :::: @conversiondigital/headless-basics-components/src/theme/default/components/${identifier}/${cmsPrefix}-mapping`);
   }
   return mappingModule;
 }

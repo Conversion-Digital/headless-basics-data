@@ -63,6 +63,32 @@ const CmsVariants = {
                 }
             },
         },
+        sanity: {
+            cmsName: "Sanity CMS",
+            deliveryApiDomain: process.env.GRAPHQL_ENDPOINT,
+            deliveryApiUrl: "w-1/3",
+            cmsUrl: process.env.CMS_URL,
+            deliveryApiKey: "",
+            contentApiKey: "",
+            previewApiKey: "",
+            projectAlias: process.env.PROJECT_ID,
+            pageTypes: {
+                home: {
+                    frontEndSlug: "",
+                    backEndSlug: "",
+                    pageVariant: "page",
+                    cmsType: "page",
+                    isFixedLayout: false
+                },
+                page: {
+                    frontEndSlug: null,
+                    backEndSlug: null,
+                    pageVariant: "page",
+                    cmsType: "page",
+                    isFixedLayout: false,
+                }
+            },
+        },
         kontent: {
             cmsName: "Kentico Kontent",
             deliveryApiDomain: process.env.KONTENT_GRAPHQL_ENDPOINT,
