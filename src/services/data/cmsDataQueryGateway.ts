@@ -90,5 +90,11 @@ export async function fetchAPIGatewayWrapper(details: DynamicFileModuleDetails, 
         log.trace(`${logPrefix()}[${pageAndSingleComponentDetails?.component.identifier}] fetchAPIGatewayWrapper - endpoint ::: ${endpoint}`);
 
         return await fetchAPI(details, endpoint, headers, pageAndSingleComponentDetails);
-    }
+    } else if(cmsVariant === 'sanity') {
+      const endpoint = `${CmsVariants.variants[cmsVariant].deliveryApiDomain}`;
+      
+      log.trace(`${logPrefix()}[${pageAndSingleComponentDetails?.component.identifier}] fetchAPIGatewayWrapper - endpoint ::: ${endpoint}`);
+
+      return await fetchAPI(details, endpoint, headers, pageAndSingleComponentDetails);
+  }
 }

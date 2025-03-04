@@ -9,7 +9,7 @@ export const HOME_OG_IMAGE_URL =
 
 export const SUPER_ALIAS = "SUPER-ALIAS::"
 
-export type CmsVariantType = "heartcore" | "contentful" | "kontent"
+export type CmsVariantType = "heartcore" | "contentful" | "kontent" | "sanity"
 
 export type CountryCode = "us" | "au" | "nz" | "en"
 
