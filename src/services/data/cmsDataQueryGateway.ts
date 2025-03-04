@@ -92,15 +92,6 @@ export async function fetchAPIGatewayWrapper(details: DynamicFileModuleDetails, 
         return await fetchAPI(details, endpoint, headers, pageAndSingleComponentDetails);
     } else if(cmsVariant === 'sanity') {
       const endpoint = `${CmsVariants.variants[cmsVariant].deliveryApiDomain}`;
-
-      // if (CmsVariants.variants[cmsVariant].deliveryApiKey) {
-      //     headers["Api-Key"] = CmsVariants.variants[cmsVariant].deliveryApiKey;
-      // } else {
-      //     throw new Error("deliveryApiKey is undefined");
-      // }
-      // if (CmsVariants.variants[cmsVariant].projectAlias) {
-      //     headers["Umb-Project-Alias"] = CmsVariants.variants[cmsVariant].projectAlias;
-      // }
       
       log.trace(`${logPrefix()}[${pageAndSingleComponentDetails?.component.identifier}] fetchAPIGatewayWrapper - endpoint ::: ${endpoint}`);
 
