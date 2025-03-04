@@ -102,7 +102,7 @@ export async function fetchAPIGatewayWrapper(details: DynamicFileModuleDetails, 
       //     headers["Umb-Project-Alias"] = CmsVariants.variants[cmsVariant].projectAlias;
       // }
       
-      log.info(`${logPrefix()}[${pageAndSingleComponentDetails?.component.identifier}] fetchAPIGatewayWrapper - endpoint ::: ${endpoint}`);
+      log.trace(`${logPrefix()}[${pageAndSingleComponentDetails?.component.identifier}] fetchAPIGatewayWrapper - endpoint ::: ${endpoint}`);
 
       return await fetchAPI(details, endpoint, headers, pageAndSingleComponentDetails);
   }
