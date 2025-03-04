@@ -1,3 +1,10 @@
+// --------------------------------------------------
+// REDUNDANT CODE NOTICE:
+// This file is part of the old page building pipeline.
+// Now replaced by pageDataBuilderService.ts
+// Keep code intact for backward compatibility. DO NOT EDIT.
+// --------------------------------------------------
+
 import { LanguageSite } from "../../interfaces/LanguageSite";
 import { getPageTypeBySlug } from "../model/getPageTypeBySlug";
 import { buildPageData } from "./buildPageData";

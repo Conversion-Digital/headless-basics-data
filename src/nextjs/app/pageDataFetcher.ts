@@ -1,23 +1,25 @@
-import { PageBlueprint, PageDefinition } from "../../interfaces/PageDefinition"
-import { getLogger } from "../../services/logging/LogConfig"
-import { GetSite } from "../../services/siteContextService"
-import { cleanSlug, isIgnoredSlug } from "../../utils/slugHelper"
+import { PageBlueprint, PageDefinition } from "../../interfaces/PageDefinition";
+import { getLogger } from "../../services/logging/LogConfig";
+import { GetSite } from "../../services/siteContextService";
+import { cleanSlug, isIgnoredSlug } from "../../utils/slugHelper";
 import {
   GetLanguageSiteByCode,
   GetMainSiteLanguage,
-} from "../../cms/tools/urlTools"
-import { buildPageData } from "../../services/data/buildPageData"
+} from "../../cms/tools/urlTools";
+import { logPrefix } from "../../utils";
 import {
-  browserUrlToCmsUrlConverter,
+  buildPageData,
   collectDynamicPageData,
-} from "../../services/data/pageDataProvider"
-import { logPrefix } from "../../utils"
+} from "../../services/data/buildPageData"; // LEGACY (REMAINS FOR BACKWARD COMPATIBILITY)
+import { getLogger as oldLogger } from "../../services/logging/LogConfig";
+import { buildPageDataWithNewPipeline } from "../../services/data/pageDataBuilderService";
 
 export interface IPageDataParams {
-  slug: string[]
-  source: string
+  slug: string[];
+  source: string;
 }
 
+// Using the same array from existing code
 const imageFileExtensions = [".jpg", ".jpeg", ".png", ".gif"];
 
 /**
@@ -75,6 +77,8 @@ const handleDynamicPageCase = async (pageConstruction: PageDefinition): Promise<
   return await collectDynamicPageData(pageConstruction);
 };
 
+// Legacy function from pageDataProvider
+import { browserUrlToCmsUrlConverter } from "../../services/data/pageDataProvider";
 
 /**
  * Fetches page data based on given parameters.
@@ -85,7 +89,13 @@ export const fetchPageData = async (params: IPageDataParams): Promise<PageBluepr
   const log = getLogger(`headless.nextjs.app.pageDataFetcher.slug. ${params?.slug}`);
   const siteLanguage = await GetMainSiteLanguage();
 
-  // Check if the site is configured to render all pages.
+  // NEW SWITCH
+  if (process.env.USE_NEW_PAGE_BUILDER === "true") {
+    // If the environment variable is set, use the new pipeline
+    return buildPageDataWithNewPipeline(params);
+  }
+
+  // Otherwise, the old legacy code path
   if (!GetSite().shouldRenderAllPages()) {
     log.debug(`${logPrefix()} Rendering of all pages is disabled.`);
     return null;

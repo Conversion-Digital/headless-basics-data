@@ -1,3 +1,10 @@
+// --------------------------------------------------
+// REDUNDANT CODE NOTICE:
+// This file is part of the old page building pipeline.
+// Now replaced by pageDataBuilderService.ts
+// Keep code intact for backward compatibility. DO NOT EDIT.
+// --------------------------------------------------
+
 import { IndividualComponentProps, PageAndSingleComponentDetails, PageDefinition, SubComponentOutline } from "../../interfaces/PageDefinition";
 import { populateGraphqlMetaData } from "../data/componentMetaDataService";
 import { getDynamicCmsDataViaCmsSelector } from "../data/graphqlDataService";

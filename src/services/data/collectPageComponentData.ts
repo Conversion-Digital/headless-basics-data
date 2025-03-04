@@ -1,3 +1,10 @@
+// --------------------------------------------------
+// REDUNDANT CODE NOTICE:
+// This file is part of the old page building pipeline.
+// Now replaced by pageDataBuilderService.ts
+// Keep code intact for backward compatibility. DO NOT EDIT.
+// --------------------------------------------------
+
 import { SUB_COMPONENT_CONTENT } from "../../cms/constants";
 import { IndividualComponentProps, PageDefinition, SubComponentOutline } from "../../interfaces/PageDefinition";
 import { logPrefix } from "../../utils";
@@ -54,7 +61,7 @@ export async function collectFixedLayoutPageComponentData(pageProps: PageDefinit
 
   const components: IndividualComponentProps[] = [];
 
-  const componentPromises = layout.components.map(componentName => 
+  const componentPromises = layout.components.map(componentName =>
     fetchAndInitializeComponentData(componentName, pageProps)
   );
   const results = await Promise.all(componentPromises);
