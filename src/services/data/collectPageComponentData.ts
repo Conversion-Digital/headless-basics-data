@@ -89,6 +89,6 @@ export async function collectDynamicLayoutPageComponentData(pageProps: PageDefin
   // get the components related
   const components = await LoadAllSubComponentData(componentsOutline, pageProps);
 
-  log.debug(`${logPrefix()}[${pageProps.preliminarySlug}] Dynamic layout component data collection completed - ${components.length} components`);
+  log.trace(`${logPrefix()}[${pageProps.preliminarySlug}] Dynamic layout component data collection completed - ${components.length} components`);
   return components;
 }

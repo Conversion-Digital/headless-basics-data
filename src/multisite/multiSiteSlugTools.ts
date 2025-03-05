@@ -3,6 +3,7 @@ import { LanguageSite } from "../interfaces/LanguageSite";
 import { PageIdentifier } from "../interfaces/PageIdentifier";
 import { GetCMS } from "../services/cmsContextService";
 import { getLogger } from "../services/logging/LogConfig";
+import { logPrefix } from "../utils/logPrefix";
 
 const log = getLogger("headless.graphql.heartcore.common.multiSite");
 
@@ -12,7 +13,7 @@ function sanitiseForKontent(result: { slug: string }): { slug: string } {
 }
 
 export function variablesMultiSiteSlug(slug: string, languageSite?: LanguageSite) {
-  log.trace("variablesMultiSiteSlug > ", slug, languageSite);
+  log.trace(`${logPrefix()} variablesMultiSiteSlug > `, slug, languageSite);
 
   if (slug.indexOf("/global-components") > -1) {
     return { slug: slug };

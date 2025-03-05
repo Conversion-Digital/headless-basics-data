@@ -20,12 +20,19 @@
  */
 
 import { getLogger } from "../logging/LogConfig";
-import { PageDefinition, PageBlueprint } from "../../interfaces/PageDefinition";
+import { PageDefinition, PageBlueprint, IndividualComponentProps } from "../../interfaces/PageDefinition";
 import { cleanSlug, isIgnoredSlug } from "../../utils/slugHelper";
 import { GetSite } from "../siteContextService";
 import { logPrefix } from "../../utils/logPrefix";
 import { GetLanguageSiteByCode, GetMainSiteLanguage } from "../../cms/tools/urlTools";
-import { getSeoData, getNavItems, getFooterStructures, getStickNavTopStructures, getBreadcrumbStructures } from "./commonData";
+import {
+  getSeoData,
+  getNavItems,
+  getFooterStructures,
+  getStickNavTopStructures,
+  getBreadcrumbStructures,
+} from "./commonData";
+import { collectFixedLayoutPageComponentData, collectDynamicLayoutPageComponentData } from "./collectPageComponentData";
 
 const log = getLogger("headless.new.pageDataBuilderService");
 
@@ -39,11 +46,12 @@ export interface INewPageDataParams {
 }
 
 /**
- * The new unified function that orchestrates
- * fetching all data for building a PageBlueprint.
+ * Builds page data with the new pipeline approach, including collecting any fixed or dynamic
+ * subcomponent data that is relevant to the page.
  */
-export async function buildPageDataWithNewPipeline(params: INewPageDataParams): Promise<PageBlueprint | null> {
-  // (1) Clean/normalize slug
+export async function buildPageDataWithNewPipeline(
+  params: INewPageDataParams
+): Promise<PageBlueprint | null> {
   const slugString = cleanSlug(params.slug);
   if (isIgnoredSlug(slugString)) {
     log.debug(`${logPrefix()} Slug is ignored: ${slugString}`);
@@ -54,6 +62,8 @@ export async function buildPageDataWithNewPipeline(params: INewPageDataParams): 
   const siteLanguage = await GetMainSiteLanguage();
   const languageSite = await GetLanguageSiteByCode(siteLanguage);
 
+  log.info(`${logPrefix()} ::: Slug: ${slugString}`);
+
   // We'll create a basic PageDefinition
   const pageConstruction: PageDefinition = {
     preliminarySlug: slugString,
@@ -61,7 +71,7 @@ export async function buildPageDataWithNewPipeline(params: INewPageDataParams): 
     isDynamic: slugString !== "/",
     pageIdentifier: {
       pageVariant: slugString === "/" ? "home" : "subComponentsPage",
-      isFixedLayout: slugString === "/",
+      isFixedLayout: false,
       backEndSlug: slugString,
       frontEndSlug: slugString,
       cmsType: slugString === "/" ? "homepage" : "dynamic",
@@ -82,11 +92,24 @@ export async function buildPageDataWithNewPipeline(params: INewPageDataParams): 
   const stickyNavItems = await getStickNavTopStructures(pageConstruction);
   const breadcrumbItems = await getBreadcrumbStructures(pageConstruction);
 
-  // We can do any advanced logic for dynamic components here
-  // For example, calling a "collectComponentsNew" function or similar
+  // Gather all components, both fixed layout and dynamic
+  let components: IndividualComponentProps[] = [];
+  const isFixedLayout = pageConstruction.pageIdentifier.isFixedLayout;
 
-  // For demonstration, let's create a blank array of components
-  const components: never[] = [];
+  if (isFixedLayout) {
+    log.debug(`${logPrefix()} Using fixed layout for slug: ${slugString}`);
+    const fixedComponents = await collectFixedLayoutPageComponentData(pageConstruction);
+    components.push(...fixedComponents);
+  }
+
+  // Even if it's a fixed layout, we can still gather dynamic subcomponents
+  log.info(`${logPrefix()} Collecting dynamic layout for slug: ${slugString}`);
+  log.info(`${logPrefix()} PageConstruction ::: pageConstruction.pageIdentifier.backEndSlug: ${pageConstruction.pageIdentifier.backEndSlug}`);
+  const dynamicComponents = await collectDynamicLayoutPageComponentData(pageConstruction);
+  components.push(...dynamicComponents);
+
+  // Sort all components by their sortOrder
+  components.sort((a, b) => a.sortOrder - b.sortOrder);
 
   // (5) Return final blueprint
   const pageBlueprint: PageBlueprint = {

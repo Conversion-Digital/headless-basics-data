@@ -15,6 +15,7 @@ export function standardVariables(IndividualComponentProps: PageAndSingleCompone
     }
 
     const thisBackendSlug = IndividualComponentProps?.page?.pageIdentifier?.backEndSlug;
+    log.info(`${logPrefix()}[${IndividualComponentProps.component.identifier}] standardVariables called .... thisBackendSlug ::: ${thisBackendSlug}`);
 
     if (typeof thisBackendSlug === 'undefined') {
         throw new Error(`${logPrefix()}[${IndividualComponentProps.component.identifier}][variables] IndividualComponentProps?.pageIdentifier?.backEndSlug is undefined`);
@@ -25,6 +26,8 @@ export function standardVariables(IndividualComponentProps: PageAndSingleCompone
     } else {
         variables = variablesMultiSiteByIdentifier(thisBackendSlug, IndividualComponentProps?.page?.languageSite)
     }
+
+    log.info(`${logPrefix()}[${IndividualComponentProps.component.identifier}] standardVariables returning .... `, JSON.stringify(variables));
 
     return variables
 }

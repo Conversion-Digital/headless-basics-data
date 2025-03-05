@@ -9,7 +9,6 @@ import {
 import { logPrefix } from "../../utils";
 import {
   buildPageData,
-  collectDynamicPageData,
 } from "../../services/data/buildPageData"; // LEGACY (REMAINS FOR BACKWARD COMPATIBILITY)
 import { getLogger as oldLogger } from "../../services/logging/LogConfig";
 import { buildPageDataWithNewPipeline } from "../../services/data/pageDataBuilderService";
@@ -78,7 +77,7 @@ const handleDynamicPageCase = async (pageConstruction: PageDefinition): Promise<
 };
 
 // Legacy function from pageDataProvider
-import { browserUrlToCmsUrlConverter } from "../../services/data/pageDataProvider";
+import { browserUrlToCmsUrlConverter, collectDynamicPageData } from "../../services/data/pageDataProvider";
 
 /**
  * Fetches page data based on given parameters.
