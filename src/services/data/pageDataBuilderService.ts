@@ -62,7 +62,7 @@ export async function buildPageDataWithNewPipeline(
   const siteLanguage = await GetMainSiteLanguage();
   const languageSite = await GetLanguageSiteByCode(siteLanguage);
 
-  log.info(`${logPrefix()} ::: Slug: ${slugString}`);
+  log.debug(`${logPrefix()} ::: Slug: ${slugString}`);
 
   // We'll create a basic PageDefinition
   const pageConstruction: PageDefinition = {
@@ -103,8 +103,8 @@ export async function buildPageDataWithNewPipeline(
   }
 
   // Even if it's a fixed layout, we can still gather dynamic subcomponents
-  log.info(`${logPrefix()} Collecting dynamic layout for slug: ${slugString}`);
-  log.info(`${logPrefix()} PageConstruction ::: pageConstruction.pageIdentifier.backEndSlug: ${pageConstruction.pageIdentifier.backEndSlug}`);
+  log.debug(`${logPrefix()} Collecting dynamic layout for slug: ${slugString}`);
+  log.trace(`${logPrefix()} PageConstruction ::: pageConstruction.pageIdentifier.backEndSlug: ${pageConstruction.pageIdentifier.backEndSlug}`);
   const dynamicComponents = await collectDynamicLayoutPageComponentData(pageConstruction);
   components.push(...dynamicComponents);
 
