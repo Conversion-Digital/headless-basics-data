@@ -85,14 +85,14 @@ export async function buildPageDataWithNewPipeline(
     return null;
   }
 
-  // (4) Collect all data we want in a single place
-  const navItems = await getNavItems(pageConstruction);
-  const seoItems = await getSeoData(pageConstruction);
-  const footerItems = await getFooterStructures(pageConstruction);
-  const stickyNavItems = await getStickNavTopStructures(pageConstruction);
-  const breadcrumbItems = await getBreadcrumbStructures(pageConstruction);
+  // Deep clone pageConstruction to avoid side effects for each function call
+  const clonedPageConstruction = JSON.parse(JSON.stringify(pageConstruction));
+  const navItems = await getNavItems(clonedPageConstruction);
+  const seoItems = await getSeoData(clonedPageConstruction);
+  const footerItems = await getFooterStructures(clonedPageConstruction);
+  const stickyNavItems = await getStickNavTopStructures(clonedPageConstruction);
+  const breadcrumbItems = await getBreadcrumbStructures(clonedPageConstruction);
 
-  // Gather all components, both fixed layout and dynamic
   let components: IndividualComponentProps[] = [];
   const isFixedLayout = pageConstruction.pageIdentifier.isFixedLayout;
 
