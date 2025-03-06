@@ -6,3 +6,4 @@ export * from "./nextjs/app";
 export * from "./interfaces";
 export * from "./ui-tools";
 export * from "./multisite";
+export * from "./cms/sanity/sanityMappingUtils";
