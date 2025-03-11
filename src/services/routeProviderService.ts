@@ -1,6 +1,7 @@
 import { getLogger } from "./logging/LogConfig";
 import { collectSitemapNavigationStructure } from "./data/collectSitemapNavigationStructure";
 import { Path } from "../interfaces/url/path";
+import { logPrefix } from "../utils/logPrefix";
 
 const log = getLogger("headless.services.components.routeProviderService");
 
@@ -26,6 +27,7 @@ export async function filterOutDataOrComponentFolders(paths: any[]) {
 
 export async function collectAllRoutes(): Promise<Path[]> {
   const data = await collectSitemapNavigationStructure("sitemap", "collectAllRoutes()");
+  log.trace(`${logPrefix()} collectAllRoutes > data > ${JSON.stringify(data)}`);
   let paths: Path[] = [];
   data.map((page: { superAlias: string; url: string }) => {
     if (page.superAlias && page.superAlias != "") {

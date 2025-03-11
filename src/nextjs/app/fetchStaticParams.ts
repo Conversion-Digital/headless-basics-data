@@ -51,6 +51,8 @@ export const fetchStaticParams = async (): Promise<IPath[]> => {
   // Flatten the nested array of paths
   let paths: IPath[] = pathsArray.flat();
 
+  log.trace(`${logPrefix()} Total paths fetched: ${JSON.stringify(paths)}`);
+
   // Add the homepage route
   paths.push({ slug: [""] });
 
@@ -60,6 +62,6 @@ export const fetchStaticParams = async (): Promise<IPath[]> => {
     paths = paths.filter((path) => !path.slug.includes("library"));
   }
 
-  log.debug(`${logPrefix()} Total paths fetched: ${paths.length}`);
+  log.trace(`${logPrefix()} Total paths fetched: ${paths.length}`);
   return paths;
 };

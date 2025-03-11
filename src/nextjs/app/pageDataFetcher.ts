@@ -85,7 +85,7 @@ import { browserUrlToCmsUrlConverter, collectDynamicPageData } from "../../servi
  * @returns PageBlueprint or null if the page should not be rendered.
  */
 export const fetchPageData = async (params: IPageDataParams): Promise<PageBlueprint | null> => {
-  const log = getLogger(`headless.nextjs.app.pageDataFetcher.slug. ${params?.slug}`);
+  const log = getLogger(`headless.nextjs.app.pageDataFetcher.slug.${params?.slug}`);
   const siteLanguage = await GetMainSiteLanguage();
 
   // NEW SWITCH

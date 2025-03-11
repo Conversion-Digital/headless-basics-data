@@ -52,6 +52,9 @@ export interface INewPageDataParams {
 export async function buildPageDataWithNewPipeline(
   params: INewPageDataParams
 ): Promise<PageBlueprint | null> {
+
+  log.trace(`${logPrefix()} ::: Slug on entry: ${params.slug}`);
+
   const slugString = cleanSlug(params.slug);
   if (isIgnoredSlug(slugString)) {
     log.debug(`${logPrefix()} Slug is ignored: ${slugString}`);
@@ -62,7 +65,7 @@ export async function buildPageDataWithNewPipeline(
   const siteLanguage = await GetMainSiteLanguage();
   const languageSite = await GetLanguageSiteByCode(siteLanguage);
 
-  log.debug(`${logPrefix()} ::: Slug: ${slugString}`);
+  log.info(`${logPrefix()} ::: Slug: ${slugString}`);
 
   // We'll create a basic PageDefinition
   const pageConstruction: PageDefinition = {

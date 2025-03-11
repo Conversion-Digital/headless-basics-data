@@ -16,20 +16,23 @@ export function stripSiteLanguagePrefix(url: string, languageSite: LanguageSite)
 }
 
 export function processURLForNavigation(url: string, languageSite: LanguageSite) {
-    if (url?.startsWith('http'))
-	return url;
-    url = stripSiteLanguagePrefix(url, languageSite);
-
-    if (languageSite?.specialSlugPrefix) {
-        const valueToRemove = languageSite.specialSlugPrefix.replace(/\/+/g, '');
-        log.debug("languageSite.specialSlugPrefix value", valueToRemove, url);
-        url = url.replace(valueToRemove, '');
-    }
-
-    if (languageSite?.shouldLanguageCodeBeAddedToNav) {
-        url = `/${languageSite.countryCode}${url}`;
-    }
+  if (url?.startsWith('http'))
+	{
     return url;
+  }
+  
+  url = stripSiteLanguagePrefix(url, languageSite);
+
+  if (languageSite?.specialSlugPrefix) {
+      const valueToRemove = languageSite.specialSlugPrefix.replace(/\/+/g, '');
+      log.debug("languageSite.specialSlugPrefix value", valueToRemove, url);
+      url = url.replace(valueToRemove, '');
+  }
+
+  if (languageSite?.shouldLanguageCodeBeAddedToNav) {
+      url = `/${languageSite.countryCode}${url}`;
+  }
+  return url;
 }
 
 export function processNavItem(item: any, languageSite: LanguageSite) {
