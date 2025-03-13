@@ -6,7 +6,9 @@ const log = getLogger("ata.headless.cms.heartcore.tools.processRawUrlsOnServer")
 export function extractComponentsFromSanityData(
   data: any,
   typename: string,
-  logger = log
+  logger = log,
+  lookupPageAndHomepage: boolean = true,
+  lookupTypeStructure: string = ''
 ) {
   if (!data) {
     logger.error(`${logPrefix()}[extractComponentsFromSanityData] no data found for typename: ${typename}`)
@@ -35,9 +37,14 @@ export function extractComponentsFromSanityData(
     })
   }
 
-  pushFoundComponents("allPage", data.allPage as any[])
-  pushFoundComponents("allHomepage", data.allHomepage as any[])
-
+  log.trace(`${logPrefix()}[extractComponentsFromSanityData] looking for ${typename} in lookupPageAndHomepage ::: ${lookupPageAndHomepage}`)
+  if(lookupPageAndHomepage){
+    pushFoundComponents("allPage", data.allPage as any[])
+    pushFoundComponents("allHomepage", data.allHomepage as any[])
+  }else if (lookupTypeStructure != ''){
+    return data[lookupTypeStructure];
+    // log.info(`${logPrefix()}[extractComponentsFromSanityData] looking for ${typename} in data[lookupTypeStructure] ::: ${data[lookupTypeStructure]}`)
+  }
 
   if (!foundComponents.length) {
     log.warn(`${logPrefix()}[motto][sanity-mapping] no motto components found`)

@@ -93,6 +93,9 @@ export async function buildPageDataWithNewPipeline(
   const navItems = await getNavItems(clonedPageConstruction);
   const seoItems = await getSeoData(clonedPageConstruction);
   const footerItems = await getFooterStructures(clonedPageConstruction);
+
+  log.trace(`${logPrefix()}[footerItems] ::: footerItems: ${JSON.stringify(footerItems)}`);
+
   const stickyNavItems = await getStickNavTopStructures(clonedPageConstruction);
   const breadcrumbItems = await getBreadcrumbStructures(clonedPageConstruction);
 
