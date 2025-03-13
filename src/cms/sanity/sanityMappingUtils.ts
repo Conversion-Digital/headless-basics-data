@@ -22,7 +22,14 @@ export function extractComponentsFromSanityData(
       if (!page?.components?.length) return
       page.components.forEach((component: any) => {
         if (component.__typename === typename) {
-          foundComponents.push(component)
+          log.trace(`${logPrefix()}[extractComponentsFromSanityData] found component for typename: ${typename} ::: ${component?.globalComponentSource?.__typename}`, component)
+          if(component?.globalComponentSource?.__typename === typename) {
+            foundComponents.push(component.globalComponentSource);
+            log.trace(`${logPrefix()}[extractComponentsFromSanityData] GLOBAL COMPONENT MATCHED :::: ${typename}`)
+          }else{
+            foundComponents.push(component);
+            log.trace(`${logPrefix()}[extractComponentsFromSanityData]  Local component MATCHED ${typename}`)
+          }
         }
       })
     })
@@ -31,7 +38,7 @@ export function extractComponentsFromSanityData(
   pushFoundComponents("allPage", data.allPage as any[])
   pushFoundComponents("allHomepage", data.allHomepage as any[])
 
-  
+
   if (!foundComponents.length) {
     log.warn(`${logPrefix()}[motto][sanity-mapping] no motto components found`)
     return {}
