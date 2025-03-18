@@ -1,198 +1,97 @@
-# Longform README
+# Longform README  
+Welcome to the <b>headless-basics-data</b> project! This repository provides a set of TypeScript modules, services, utilities, and interfaces designed for a headless CMS approach. The code aims to support a flexible, multi-site setup, offering features like content rendering, SEO handling, language-based routing, and more. Below is a comprehensive overview of the project and its underlying code.  
 
-Welcome to the **headless-basics-data** project! This repository provides a set of TypeScript modules, services, utilities, and interfaces designed for a headless CMS approach. The code aims to support a flexible, multi-site setup, offering features like content rendering, SEO handling, language-based routing, and more. Below is a comprehensive overview of the project and its underlying code.
+## Table of Contents  
+1. Overview  
+2. Architecture Run Through  
+3. Components Overview  
+4. Project Structure  
+5. Key Features  
+6. Installation  
+7. Building  
+8. Usage  
+9. Configuration &amp; Environment Variables  
+10. Publishing the Package  
+11. Contributing  
+12. License  
+ 
+## Overview  
+The <b>headless-basics-data</b> project provides a modular and extensible codebase for managing content in a headless CMS environment. It supports multi-site configurations, dynamic content fetching, and SEO metadata generation.  
+ 
+## Architecture Run Through  
+The project is organized into several key areas:  
+- <b>CMS Integration</b>: Contains modules for interfacing with various CMS platforms such as Umbraco Heartcore, Kontent, and Contentful. This area includes tools for constructing GraphQL queries and processing responses from the CMS.  
+- <b>Data Services</b>: Responsible for fetching, processing, and aggregating data from the CMS. Services include page data collection, component data processing, and SEO data generation.  
+- <b>Routing and URL Services</b>: Implements logic for processing URLs and navigation. This involves stripping language prefixes, matching aliases, and transforming CMS URLs into friendly formats.  
+- <b>UI Tools and Components</b>: Provides utility functions and components for rendering navigation menus, themes, and dynamic content on the frontend.  
+- <b>Utilities and Logging</b>: A collection of helper functions for string manipulation, hashing, and logging to maintain consistency and aid in debugging.  
 
----
+## Components Overview  
+Components in this project serve as modular building blocks representing discrete sections of a webpage. They are utilized to render dynamic content retrieved from the CMS:  
+- <b>Dynamic Components</b>: These components are imported dynamically based on the page layout and are responsible for rendering various content sections such as banners, grids, and content blocks.  
+- <b>Component Services</b>: Each component has associated services that handle data fetching, variable mapping, and query execution. This standardized construction ensures consistency across different pages.  
+- <b>Theming and Styling</b>: Components leverage Tailwind CSS for styling, and theme-specific modules may override default behaviors to provide a customized look and feel.  
+- <b>Fallback Mechanisms</b>: When a specific component cannot be loaded, fallback components are used to maintain page functionality and display an appropriate message.  
 
-## Table of Contents
+## Project Structure  
+The repository is organized as follows:  
+- <b>src/</b>    
+>>>>&ndash; <b>cms/</b>: Contains CMS-specific tools and constants.  
+>>>>&ndash; <b>interfaces/</b>: TypeScript interfaces defining the project&apos;s data models.  
+>>>>&ndash; <b>multisite/</b>: Tools for handling multi-site URL slugs.  
+>>>>&ndash; <b>nextjs/app/</b>: Modules for Next.js page-data handling.  
+>>>>&ndash; <b>services/</b>: Core business logic for data fetching, URL processing, SEO, and logging.  
+>>>>&ndash; <b>ui-tools/</b>: Utility modules for navigation and theming.  
+>>>>&ndash; <b>utils/</b>: General-purpose helpers for string manipulation, prefetching, and more.  
+- <b>bitbucket-pipelines.yml.disabled</b>: Example pipeline configuration.  
+- <b>package.json</b>: Project metadata, scripts, and dependencies.  
+- <b>tsconfig.json</b>: TypeScript configuration for building type definitions.  
+- <b>tailwind.config.cjs</b> and <b>postcss.config.cjs</b>: Configuration files for Tailwind CSS and PostCSS processing.  
 
-1. **Overview**  
-2. **Project Structure**  
-3. **Key Features**  
-4. **Installation**  
-5. **Building**  
-6. **Usage**  
-7. **Configuration & Environment Variables**  
-8. **Publishing the Package**  
-9. **Contributing**  
-10. **License**  
+## Key Features  
+1. <b>Multi-Site Slug Management</b>: Dynamic transformation of slugs based on language and site configuration.  
+2. <b>CMS Data Fetching</b>: Supports multiple CMS platforms with GraphQL integration.  
+3. <b>Flexible Page Data &amp; Layout</b>: Aggregates data for both fixed and dynamic page layouts.  
+4. <b>SEO &amp; Navigation</b>: Automated generation of SEO metadata and navigation structures.  
+5. <b>Type-Safe Interfaces</b>: Extensive TypeScript interfaces ensure code maintainability and scalability.  
 
----
+## Installation  
+1. Install pnpm globally:  npm install -g pnpm  
+2. Clone the repository:  git clone <repository-url>  
+3. Navigate into the project directory and install dependencies:  pnpm install  
 
-## Overview
+## Building  
+To build the project and generate type declarations:  
+1. Clean the build directory:  pnpm run clean  
+2. Build the project:  pnpm run build  
+The build artifacts will be located in the <b>dist/</b> directory.  
 
-The **headless-basics-data** project aims to provide reusable building blocks for a headless CMS ecosystem. Here, youU+0060ll find code to:
+## Usage  
+To integrate the package into your project:  
+1. Install the package:  pnpm add @conversiondigital/headless-basics-data  
+2. Import required modules:  import { buildPageData } from &apos;@conversiondigital/headless-basics-data&apos;;  
+3. Configure your CMS and multi-site settings, then use the services to fetch data, build pages, and generate SEO metadata.  
 
-- **Fetch** data from various CMS platforms (currently focusing on Umbraco Heartcore, Kontent, and Contentful).  
-- **Render** content for pages, sub-components, and dynamic data using a multi-site structure.  
-- **Build** meta information and SEO data programmatically.  
-- **Manage** language-based URLs, multi-site routing, and alias logic.
+## Configuration &amp; Environment Variables  
+Configure the following environment variables as needed:  
+- <b>UMBRACO_GRAPHQL_ENDPOINT</b>: The GraphQL endpoint for Umbraco Heartcore.  
+- <b>KONTENT_GRAPHQL_ENDPOINT</b>, <b>KONTENT_PROJECT_ID</b>, <b>KONTENT_PREVIEW_API_KEY</b>: Settings for Kentico Kontent.  
+- <b>CONTENTFUL_GRAPHQL_ENDPOINT</b>, <b>CONTENTFUL_SPACE_ID</b>, <b>CONTENTFUL_DELIVERY_API_KEY</b>: Settings for Contentful.  
+- <b>NEXT_PUBLIC_LOG_LEVEL</b>: Controls log verbosity (e.g., trace, debug, info, warn, error).  
+- <b>NEXT_PUBLIC_CMS_VARIANT</b>: Determines which CMS variant to use (e.g., heartcore, contentful, or kontent).  
 
-All modules are written in **TypeScript**, offering type definitions and interfaces for structured and maintainable code.
+## Publishing the Package  
+When ready to publish the updated package:  
+1. Update the version in <b>package.json</b>:  pnpm version patch  
+2. Build the project:  pnpm run build  
+3. Publish from the <b>dist/</b> directory:  npm publish ./dist --no-git-checks  
 
----
+## Contributing  
+1. Fork the repository and clone it locally.  
+2. Create a feature or fix branch from <b>develop</b>.  
+3. Commit your changes and open a Pull Request detailing your changes and testing steps.  
 
-## Project Structure
+Feel free to suggest improvements to the code structure, documentation, or usage examples.  
 
-A high-level view of the repository folder organization:
-
-- **src/**  
-  - **cms/**  
-    - Contains CMS-specific tools and constants.  
-    - **heartcore/tools/**: Utility functions for processing Umbraco Heartcore content (e.g., filtering and updating class attributes).  
-    - **constants.ts** / **SiteConstants.ts**: Shared constants and factory methods for site configuration.  
-  - **interfaces/**  
-    - TypeScript interfaces that define data models (e.g., PageIdentifier, LanguageSite, ProductI).  
-  - **multisite/**  
-    - Tools for multi-site slug handling and generation.  
-  - **nextjs/app/**  
-    - Next.js specific modules for handling page-data.  
-  - **services/**  
-    - **data/**: Collects data from the CMS, providing buildPageData, pageLayoutDataCollector, etc.  
-    - **components/**: Services for dynamic imports and page-component data location.  
-    - **logging/**: Custom logging wrapper configuration.  
-    - **model/**: Logic for retrieving page type by slug.  
-    - **urlService.ts** / **urlServiceServer.ts**: Functions to handle URL rewriting, alias matching, and prefix stripping.  
-    - **seoRendererService.ts**: Methods to generate Next.js metadata for SEO.  
-  - **ui-tools/**  
-    - Basic UI-related utility modules (e.g., navigation, theme).  
-  - **utils/**  
-    - General-purpose helpers (e.g., replaceString, prefetch, parseHeadingTags).  
-  - **index.ts**  
-    - Exports important modules/services.  
-- **bitbucket-pipelines.yml.disabled**  
-  - Example pipeline file for building and deploying (disabled by default).  
-- **package.json**  
-  - Declares project metadata, scripts, and dependencies.  
-- **tsconfig.json**  
-  - TypeScript configuration for building type definitions.  
-- **tailwind.config.cjs** / **postcss.config.cjs**  
-  - Configuration files for Tailwind CSS processing.
-
----
-
-## Key Features
-
-1. **Multi-Site Slug Management**  
-   - Tools for transforming slugs according to language or site settings.  
-   - Ability to strip or add language prefixes dynamically.
-
-2. **CMS Data Fetching**  
-   - GraphQL queries for retrieving content from multiple CMS variants (e.g., **Heartcore**, **Kontent**, **Contentful**).  
-   - Modular design for easy extension to additional CMS vendors.
-
-3. **Flexible Page Data & Layout**  
-   - Functions to collect a pageU+0060s data from multiple sources, merging them into a unified structure.  
-   - Sub-component logic for nested or dynamic content sections.
-
-4. **SEO & Navigation**  
-   - Automatic retrieval of SEO fields and generation of Next.js metadata.  
-   - Navigation building with the option for deep or shallow search in the data structure.
-
-5. **Type-Safe Interfaces**  
-   - All data structures and responses are typed, improving safety and clarity in development.
-
----
-
-## Installation
-
-1. Ensure you have [**pnpm**](https://pnpm.io) installed, or install it globally:
-   ```
-   npm install -g pnpm
-   ```
-2. Clone the repository:
-   ```
-   git clone <repository-url>
-   ```
-3. Navigate into the project directory and install dependencies:
-   ```
-   pnpm install
-   ```
-
----
-
-## Building
-
-To generate a build containing TypeScript declaration files:
-
-1. **Clean** the output and delete any old definitions:
-   ```
-   pnpm run clean
-   ```
-2. **Build** the type declarations:
-   ```
-   pnpm run build
-   ```
-The build artifacts will be placed into the **dist/** directory, including **index.d.ts** and other declaration files. This ensures your published package has the necessary type definitions for consumers.
-
----
-
-## Usage
-
-The **@conversiondigital/headless-basics-data** package is typically used in Next.js or Node.js applications:
-
-1. **Install** via your package manager once published:
-   ```
-   npm install @conversiondigital/headless-basics-data
-   ```
-   or
-   ```
-   pnpm add @conversiondigital/headless-basics-data
-   ```
-2. **Import** what you need:
-   ```
-   import { buildPageData } from U+0060@conversiondigital/headless-basics-dataU+0060;
-   import { processURLForNavigation } from U+0060@conversiondigital/headless-basics-dataU+0060;
-   ```
-3. **Configure** your multi-site or CMS settings, then call the relevant services to fetch data, build pages, or generate SEO metadata.
-
----
-
-## Configuration & Environment Variables
-
-Several environment variables can be used to configure CMS credentials or logging:
-
-- **UMBRACO_GRAPHQL_ENDPOINT**: The GraphQL endpoint for Umbraco Heartcore.  
-- **KONTENT_GRAPHQL_ENDPOINT** / **KONTENT_PROJECT_ID** / **KONTENT_PREVIEW_API_KEY**: For Kentico Kontent.  
-- **CONTENTFUL_GRAPHQL_ENDPOINT**, **CONTENTFUL_SPACE_ID**, **CONTENTFUL_DELIVERY_API_KEY**: For Contentful.  
-- **NEXT_PUBLIC_LOG_LEVEL**: Controls log verbosity (U+0060traceU+0060, U+0060debugU+0060, U+0060infoU+0060, U+0060warnU+0060, U+0060errorU+0060).  
-- **NEXT_PUBLIC_CMS_VARIANT**: Determines which CMS variant to use. E.g. U+0060heartcoreU+0060, U+0060contentfulU+0060, or U+0060kontentU+0060.
-
----
-
-## Publishing the Package
-
-When changes are ready, you can publish the updated package to an npm registry:
-
-1. Update the version in **package.json**:
-   ```
-   pnpm version patch
-   ```
-2. Build the project:
-   ```
-   pnpm run build
-   ```
-3. Publish from **dist/**:
-   ```
-   npm publish ./dist --no-git-checks
-   ```
-   Alternatively, if using a CI/CD pipeline, refer to the example in **bitbucket-pipelines.yml.disabled**.
-
----
-
-## Contributing
-
-1. **Fork** this repository and clone locally.  
-2. **Create** a feature or fix branch from **develop**.  
-3. **Commit** and push changes.  
-4. **Open a Pull Request** detailing your changes and any relevant testing steps.
-
-Feel free to suggest improvements to code structure, documentation, or usage examples.
-
----
-
-## License
-
-This project is licensed under the **ISC License**. For details, see the [package.json](./package.json) file or consult the repository documentation.
-
----
+## License  
+This project is licensed under the ISC License. For details, please refer to the <b>package.json</b> file.  
