@@ -19,7 +19,7 @@ export interface ThemeConfig {
 
 export interface ViewComponentProps {
   blueprint?: PageBlueprint;
-  componentInformation: IndividualComponentProps;
+  componentDetails: IndividualComponentProps;
 }
 
 export enum ConfigKeysEnum {

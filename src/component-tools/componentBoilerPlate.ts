@@ -4,7 +4,7 @@ import { getLogger } from "../services";
 const log = getLogger("data.component-tools.componentBoilerPlate")
 
 export function componentBoilerPlate(dynamicComponent: ViewComponentProps) : {variant: string, blueprint: any, componentInformation: any, matchingData: any} {
-    const componentInformation = dynamicComponent.componentInformation
+    const componentInformation = dynamicComponent.componentDetails
     const blueprint = dynamicComponent.blueprint
   
     if (!componentInformation) {
