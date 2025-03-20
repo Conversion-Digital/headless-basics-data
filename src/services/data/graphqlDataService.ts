@@ -63,16 +63,16 @@ export const log = getLogger("headless-data-lib.services.data.graphqlDataService
 export async function resolveModuleFileLocation(
   details: DynamicFileModuleDetails
 ): Promise<DynamicFileModuleDetails> {
-  const cmsPrefix = process.env.NEXT_PUBLIC_CMS_VARIANT
+  const cmsPrefix = details?.cmsPrefix || (process.env.NEXT_PUBLIC_CMS_VARIANT
     ? `${process.env.NEXT_PUBLIC_CMS_VARIANT.toLowerCase()}`
-    : "";
+    : "");
 
 
   // testSitemapImport()
 
   // Change this to however you obtain your "siteId".
   // For example, an environment variable or another property in `details`.
-  const siteId = process.env.NEXT_PUBLIC_SITE_ID || "default";
+  const siteId = details?.siteId || process.env.SITE_ID || "default";
 
   details.cmsPrefix = cmsPrefix;
   const identifier = details?.identifier?.toLowerCase() || "";
@@ -99,10 +99,10 @@ export async function resolveModuleFileLocation(
     details.queryString = details.query ? details.query.toString() : "Unknown";
 
     if (details.queryString === "Unknown") {
-      log.error(`${logPrefix()}[${details.identifier}] query not found for ${details.identifier}`);
+      log.error(`${logPrefix()}[${details.identifier}][siteId::${siteId}][cmsPrefix::${cmsPrefix}] query not found for ${details.identifier}`);
     } else {
       details.failedToFind = false;
-      log.trace(`${logPrefix()}[${details.identifier}][FOUND] ${details.matchingPath}`);
+      log.trace(`${logPrefix()}[${details.identifier}][siteId::${siteId}][cmsPrefix::${cmsPrefix}]  ::: [FOUND] ::: ${details.matchingPath}`);
     }
   }
 
@@ -164,8 +164,14 @@ async function extractSiteTheme(details: DynamicFileModuleDetails, siteThemefall
         break;
       case "light-blue":
         log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
-          details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
         log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
+        break;
+      case "corporate1":
+        log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
+        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/corporate1/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+        log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
+        break;
       case "default":
         details = await extractDefaultTheme(details);
         break;
@@ -216,7 +222,7 @@ export async function getDynamicCmsDataViaCmsSelector(componentAndPageProps: Pag
 
     failedToFind: true,
     queryString: "",
-    cmsPrefix: "",
+    cmsPrefix: process.env.NEXT_PUBLIC_CMS_VARIANT ? `${process.env.NEXT_PUBLIC_CMS_VARIANT.toLowerCase()}` : "",
     query: undefined,
     matchingPath: "",
     moduleX: undefined,
@@ -228,6 +234,7 @@ export async function getDynamicCmsDataViaCmsSelector(componentAndPageProps: Pag
     data: undefined,
     view: undefined,
     useCache: componentAndPageProps.component.useCache,
+    siteId: process.env.SITE_ID || "default",
   }
 
   details = await resolveModuleFileLocation(details)
@@ -236,7 +243,7 @@ export async function getDynamicCmsDataViaCmsSelector(componentAndPageProps: Pag
   // let scenario = "variable-unprocessed"
   try {
     if (details.failedToFind) {
-      log.error(`${logPrefix()}[${details.identifier}] Failed to find the following module -- `, `${details.identifier} > ${ConfigKeysEnum.query}()`);
+      log.error(`${logPrefix()}[${details.identifier}][siteId::${details.siteId}][cmsPrefix::${details.cmsPrefix}] Failed to find the following module -- `, `${details.identifier} > ${ConfigKeysEnum.query}()`);
       return details;
     }
 

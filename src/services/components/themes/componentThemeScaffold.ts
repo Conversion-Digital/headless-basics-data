@@ -102,6 +102,12 @@ async function retrieveSiteThemeVariables(siteTheme: string, identifier: string,
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} MATCH - attempting to load `);
         fallbackVarsModule = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${identifier}/variables`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} loaded variables module`);
+        break;
+      case "corporate1":
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} MATCH - attempting to load `);
+        fallbackVarsModule = await import(`@conversiondigital/headless-basics-components/src/theme/corporate1/components/${identifier}/variables`);
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} loaded variables module`);
+        break;
     }
 
     if (fallbackVarsModule && fallbackVarsModule.variables) {
@@ -142,6 +148,7 @@ async function retrieveSiteThemeQuery(siteTheme: string, identifier: string, que
   try 
   {
     if(siteTheme === "default") {
+      log.trace(`${logPrefix()}[${identifier}] Site Theme ::: ${siteTheme} == default MATCH AT FIRST CHECK - attempting to load query`);
       return await retrieveDefaultQuery(queryModule, identifier, cmsPrefix, componentName);
     }
 
@@ -155,6 +162,12 @@ async function retrieveSiteThemeQuery(siteTheme: string, identifier: string, que
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} MATCH - attempting to load `);
         queryModule = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${identifier}/${cmsPrefix}-query`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} loaded query module`);
+        break;
+      case "corporate1":
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} MATCH - attempting to load @conversiondigital/headless-basics-components/src/theme/corporate1/components/${identifier}/${cmsPrefix}-query `);
+        queryModule = await import(`@conversiondigital/headless-basics-components/src/theme/corporate1/components/${identifier}/${cmsPrefix}-query`);
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} loaded query module`);
+        break;
     }
   } catch (fallbackError) {
     log.trace(`${logPrefix()}[${identifier}] Site Theme :::: ${siteTheme} -- Fallback import failed for query - ${(fallbackError as Error)?.message}`);
@@ -203,6 +216,11 @@ async function retrieveSiteThemeMapping(siteTheme: string, identifier: string, m
       case "light-blue":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} MATCH - attempting to load mapping`);
         mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${identifier}/${cmsPrefix}-mapping`);
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} loaded mapping module`);
+        break;
+      case "corporate1":
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} MATCH - attempting to load mapping`);
+        mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/corporate1/components/${identifier}/${cmsPrefix}-mapping`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} loaded mapping module`);
         break;
     }

@@ -5,6 +5,7 @@ import { JSX } from "react";
 import { RenderSubComponentLocationProps } from '../interfaces/RenderSubComponentContentProps';
 import { IndividualComponentProps } from '../interfaces/PageDefinition';
 import { ViewComponentProps } from '../interfaces/ThemeConfig.interface';
+import { logPrefix } from '../utils/logPrefix';
 
 const log = getLogger("headless.contentRendererServiceTSX");
 
@@ -70,17 +71,17 @@ export const RenderSubComponentContent: React.FC<RenderSubComponentLocationProps
   // Loop through each filtered component and render it dynamically
   allSubComponents.forEach((element: IndividualComponentProps) => {
     let Component: React.FC<ViewComponentProps> | null = null; // Initialize the component as null
-
+    const componentNameLower = element?.subComponentOutline?.__typename?.toLowerCase();
     if (typeof element.view === 'function') {
       // Cast the view function to a React.FC<ViewComponentProps>
       Component = element.view as React.FC<ViewComponentProps>;
     } else {
       // Fallback if no valid component is found
-      log.info('No Component Type Found: ', element?.subComponentOutline);
+      log.trace(`${logPrefix()} ::: No Component Type Found: ${componentNameLower}`);
       /* eslint-disable react/display-name */
       Component = () => (
         <FallbackComponent
-          typename={element.subComponentOutline?.__typename?.toLowerCase() || "Unknown"}
+          typename={componentNameLower || "Unknown"}
         />
       );
       Component.displayName = 'FallbackComponentWrapper';

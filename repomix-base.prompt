@@ -62,15 +62,14 @@ __XML HERE__
 # Next.js/TypeScript Project Guidelines
 
 ## Overview
-This is a Next.js project template.
+This is a framework for querying and displaying data from a headless CMS. It collects data from a CMS and returns that data in a structured format.
 
 ## Tech Stack
-- Framework: Next.js 14+
-- Language: TypeScript
+- Framework: Next.js 15+
+- Language: TypeScript, React 19
 - State Management: React Context / Redux Toolkit
 - API Layer: Next.js API Routes
-- Database: Prisma ORM with PostgreSQL
-- Styling: Tailwind CSS
+- Styling: Tailwind CSS V4
 - Testing: Jest and React Testing Library
 - Package Manager: pnpm
 
@@ -85,7 +84,6 @@ Follow these rules when building the project.
 - Aim for roughly 30 lines of code per component/function
 - Keep logic and operators simple and pleasant to read
 - Use TypeScript types/interfaces for all components, functions, and methods
-- Use Zod for data validation and serialization
 - Use Next.js API routes for building APIs
 - Use Prisma for database operations
 

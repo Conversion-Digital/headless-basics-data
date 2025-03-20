@@ -35,4 +35,6 @@ export interface DynamicFileModuleDetails {
   result?: QueryResult; // This is the data that comes back as a result of the call the GraphQL Query. This is the data field refined by the dataMapper Function in the module.
   view?: ViewFn; // This is the view that will be rendered for the component.
   useCache?: boolean;
+
+  siteId: string;
 }
