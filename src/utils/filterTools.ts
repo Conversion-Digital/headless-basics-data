@@ -14,11 +14,11 @@ export function processUrlEndWith(url: string): string {
 
 export function filterFirstSubComponentData(data: ResponseItem[], typeName:string): any {
   for (const item of data) {
-    const node = item.node;
+    const node = item?.node;
     if (node.__typename === 'DataFolder' && node.name === '_components') {
-      for (const edge of node.children.edges) {
-        if (edge.node.__typename === typeName) {
-          return edge.node;
+      for (const edge of node?.children?.edges) {
+        if (edge?.node?.__typename?.toLowerCase() === typeName?.toLowerCase()) {
+          return edge?.node;
         }
       }
     }
@@ -29,10 +29,10 @@ export function filterFirstSubComponentData(data: ResponseItem[], typeName:strin
 export function filterSubComponentData(data: ResponseItem[], typeName: string): any[] {
   const matchingChildren: any[] = [];
   for (const item of data) {
-    const node = item.node;
-    if (node.__typename === 'DataFolder' && node.name === '_components') {
-      for (const edge of node.children.edges) {
-        if (edge.node.__typename === typeName) {
+    const node = item?.node;
+    if (node?.__typename === 'DataFolder' && node?.name === '_components') {
+      for (const edge of node?.children?.edges) {
+        if (edge?.node?.__typename?.toLowerCase() === typeName?.toLowerCase()) {
           matchingChildren.push(edge.node);
         }
       }
