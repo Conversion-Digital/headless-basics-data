@@ -10,7 +10,7 @@ type LogLevelKey = keyof typeof LogLevel;
 
 const resolveLogLevel = (): number => {
     const logLevel = process.env.NEXT_PUBLIC_LOG_LEVEL || "info";
-    switch (logLevel.toLowerCase()) {
+    switch (logLevel?.toLowerCase()) {
         case "trace":
             return LogLevel.Trace;
         case "debug":

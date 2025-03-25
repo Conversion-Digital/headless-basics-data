@@ -64,7 +64,7 @@ export async function resolveModuleFileLocation(
   details: DynamicFileModuleDetails
 ): Promise<DynamicFileModuleDetails> {
   const cmsPrefix = details?.cmsPrefix || (process.env.NEXT_PUBLIC_CMS_VARIANT
-    ? `${process.env.NEXT_PUBLIC_CMS_VARIANT.toLowerCase()}`
+    ? `${process.env.NEXT_PUBLIC_CMS_VARIANT?.toLowerCase()}`
     : "");
 
 
@@ -89,7 +89,7 @@ export async function resolveModuleFileLocation(
   details.matchingPath = primaryPath;
   details.failedToFind = true;
 
-  log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}] Attempting primary path: ${primaryPath}`);
+  log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}] Attempting primary path: ${primaryPath}`);
 
   details = await extractOverrideTheme(details, siteId, identifier, primaryPath, siteThemefallbackPath, siteTheme, defaultFallbackPath);
 
@@ -123,7 +123,7 @@ export async function resolveModuleFileLocation(
 async function extractOverrideTheme(details: DynamicFileModuleDetails, siteId: string, identifier: string, primaryPath: string, siteThemefallbackPath: string, siteTheme: string, defaultFallbackPath: string) {
   log.trace(`${logPrefix()}[${identifier}] Attempting primary path: ${primaryPath}`);
   try {
-    details.moduleX = await import(`theme/${siteId}/components/${identifier.toLowerCase()}`).then((module) => module.default);
+    details.moduleX = await import(`theme/${siteId}/components/${identifier?.toLowerCase()}`).then((module) => module.default);
     details.matchingPath = primaryPath;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -154,38 +154,37 @@ async function extractSiteTheme(details: DynamicFileModuleDetails, siteThemefall
     //@ts-ignore
     // const homepage = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/homepagev2body`).then((module) => module.default);
 
-    // log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}] HOMEPAGE LOADED FINE`);
 
     switch(siteTheme){
       case "deep-purple":
-        log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load ${siteThemefallbackPath}`);
+        log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load ${siteThemefallbackPath}`);
           details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
-        log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == deep-purple loaded ${siteThemefallbackPath}`);
+        log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == deep-purple loaded ${siteThemefallbackPath}`);
         break;
       case "light-blue":
-        log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
+        log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
         details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
-        log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
+        log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
         break;
       case "corporate1":
-        log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
+        log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
         details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/corporate1/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
-        log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
+        log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
         break;
       case "default":
         details = await extractDefaultTheme(details);
         break;
     }      
     details.matchingPath = siteThemefallbackPath;
-    log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][FALLBACK] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
+    log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][FALLBACK] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
   } catch (fallbackError: unknown) {
     if (fallbackError instanceof Error) {
       log.trace(
-        `${logPrefix()}[${details.identifier.toLowerCase()}][${siteTheme}][110] Site Theme ::: ${siteTheme} Fallback module not found:`,
+        `${logPrefix()}[${details.identifier?.toLowerCase()}][${siteTheme}][110] Site Theme ::: ${siteTheme} Fallback module not found:`,
         fallbackError.message
       );
     } else {
-      log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][${siteTheme}][114] Site Theme ::: ${siteTheme} Fallback module not found:`, fallbackError);
+      log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][${siteTheme}][114] Site Theme ::: ${siteTheme} Fallback module not found:`, fallbackError);
     }
     details = await extractDefaultTheme(details);
   }
@@ -200,17 +199,17 @@ async function extractSiteTheme(details: DynamicFileModuleDetails, siteThemefall
  * @returns 
  */
 async function extractDefaultTheme(details: DynamicFileModuleDetails) {
-  const currentPath = `@conversiondigital/headless-basics-components/src/theme/default/components/${details.identifier.toLowerCase()}`;
+  const currentPath = `@conversiondigital/headless-basics-components/src/theme/default/components/${details.identifier?.toLowerCase()}`;
   try {
-    log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][DEFAULT THEME][191] Attempting default theme detection: ${currentPath}`);
-    details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+    log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][DEFAULT THEME][191] Attempting default theme detection: ${currentPath}`);
+    details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/${details.identifier?.toLowerCase()}`).then((module) => module.default);
     details.matchingPath = currentPath;
-    log.trace(`${logPrefix()}[${details.identifier.toLowerCase()}][DEFAULT THEME][197] Default Theme loaded ${currentPath}`);
+    log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][DEFAULT THEME][197] Default Theme loaded ${currentPath}`);
   } catch (fallbackError: unknown) {
     if (fallbackError instanceof Error) {
-      log.error(`${logPrefix()}[${details.identifier.toLowerCase()}][Path: ${currentPath}][200] Default Theme Fallback module not found:`, fallbackError.message);
+      log.error(`${logPrefix()}[${details.identifier?.toLowerCase()}][Path: ${currentPath}][200] Default Theme Fallback module not found:`, fallbackError.message);
     } else {
-      log.error(`${logPrefix()}[${details.identifier.toLowerCase()}][Path: ${currentPath}][202] Default Theme Fallback module not found:`, fallbackError);
+      log.error(`${logPrefix()}[${details.identifier?.toLowerCase()}][Path: ${currentPath}][202] Default Theme Fallback module not found:`, fallbackError);
     }
   }
   return details;
@@ -218,11 +217,11 @@ async function extractDefaultTheme(details: DynamicFileModuleDetails) {
 
 export async function getDynamicCmsDataViaCmsSelector(componentAndPageProps: PageAndSingleComponentDetails): Promise<DynamicFileModuleDetails> {
   let details: DynamicFileModuleDetails = {
-    identifier: componentAndPageProps.component.identifier.toLowerCase(),
+    identifier: componentAndPageProps.component.identifier?.toLowerCase(),
 
     failedToFind: true,
     queryString: "",
-    cmsPrefix: process.env.NEXT_PUBLIC_CMS_VARIANT ? `${process.env.NEXT_PUBLIC_CMS_VARIANT.toLowerCase()}` : "",
+    cmsPrefix: process.env.NEXT_PUBLIC_CMS_VARIANT ? `${process.env.NEXT_PUBLIC_CMS_VARIANT?.toLowerCase()}` : "",
     query: undefined,
     matchingPath: "",
     moduleX: undefined,

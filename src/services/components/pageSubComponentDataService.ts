@@ -97,7 +97,7 @@ export async function LoadAllSubComponentData(subComponentsListing: SubComponent
     await Promise.all(subComponentsListing.map(async (item: SubComponentOutline) => {
       if(item.__typename){
         const sortOrder = item.sortOrder ? item.sortOrder : 0;
-        log.trace(`${logPrefix()}[LoadAllSubComponentData][2][${pageConstructionProps.preliminarySlug}][${sortOrder}] `, item.__typename.toLowerCase());
+        log.trace(`${logPrefix()}[LoadAllSubComponentData][2][${pageConstructionProps.preliminarySlug}][${sortOrder}] `, item.__typename?.toLowerCase());
         const singleComponentResult: IndividualComponentProps | undefined = await loadSingleComponentGraphQLData(item, pageConstructionProps);
         if(singleComponentResult){
           const specialOrder = singleComponentResult?.data?.order ? singleComponentResult?.data?.order : 'Top'; // This is either Top or Bottom. It is used for special cases where the pages contain a mix of Fixed and Dynamic components
@@ -105,7 +105,7 @@ export async function LoadAllSubComponentData(subComponentsListing: SubComponent
           log.trace(`${logPrefix()}[LoadAllSubComponentData][3][${pageConstructionProps.preliminarySlug}][${sortOrder}][specialOrder: ${specialOrder}] ${singleComponentResult.id}`);
 
           item.order = specialOrder;
-          const property = item.__typename.toLowerCase() +"-"+ sortOrder;
+          const property = item.__typename?.toLowerCase() +"-"+ sortOrder;
           singleComponentResult.id = property;
           singleComponentResult.sortOrder = sortOrder;
           componentsLoaded.push(singleComponentResult);
