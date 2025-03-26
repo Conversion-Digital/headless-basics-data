@@ -91,7 +91,7 @@ export async function fetchAPIGatewayWrapper(details: DynamicFileModuleDetails, 
 
         return await fetchAPI(details, endpoint, headers, pageAndSingleComponentDetails);
     } else if(cmsVariant === 'sanity') {
-      const projectId = process.env.SANITY_STUDIO_PROJECT_ID || "5he8nsc5";
+      const projectId = process.env.PROJECT_ID || "5he8nsc5";
       const defaultEndpoint = `https://${projectId}.api.sanity.io/v2023-08-01/graphql/production/default`;
       const endpoint = CmsVariants.variants[cmsVariant].deliveryApiDomain || defaultEndpoint;
       
