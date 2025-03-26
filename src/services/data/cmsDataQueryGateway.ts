@@ -57,6 +57,81 @@ export async function fetchAPI(
   }
 }
 
+export async function fetchMutationAPI(
+  mutationPayload: any,
+  endpoint: string,
+  headers: { [key: string]: string } = {}
+) {
+  log.trace(
+    `${logPrefix()} endpoint: ${endpoint}`
+  );
+  log.trace(
+    `${logPrefix()} mutationPayload: ${
+      JSON.stringify(mutationPayload) || " -- no mutationPayload"
+    }`
+  );
+
+  let json = { data: undefined, errors: undefined };
+
+  const revalidate = process.env.NEXT_REVALIDATE_TIME
+    ? parseInt(process.env.NEXT_REVALIDATE_TIME)
+    : 100;
+
+  const bodyString = JSON.stringify(mutationPayload);
+  log.trace(
+    `${logPrefix()} -- bodyString: ${bodyString}`
+  );
+
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: headers,
+    body: bodyString,
+    next: { revalidate: revalidate },
+  });
+
+  log.trace(
+    `${logPrefix()} -- res.status: ${res.status}`
+  );
+
+  json = await res.json();
+
+  if (json.errors) {
+    try {
+      log.trace(
+        `${logPrefix()} fetchMutationAPI - Failed to fetch mutation`,
+        json.errors
+      );
+      log.error(json.errors);
+    } catch (e) {
+      log.error(
+        `${logPrefix()} fetchMutationAPI - error`,
+        json.errors
+      );
+    }
+    throw new Error(
+      `${logPrefix()} MUTATION ERRORS :::: ${JSON.stringify(
+        json?.errors
+      )} ::::: mutationPayload = ${JSON.stringify(mutationPayload)}`
+    );
+  }
+
+  if (json.data !== undefined && json.data !== null) {
+    log.trace(
+      `${logPrefix()} returning json.data ::: ${JSON.stringify(
+        json?.data
+      )?.substring(0, 100)}`
+    );
+    return json.data;
+  } else {
+    log.trace(
+      `${logPrefix()} returning pure JSON variable ::: ${JSON.stringify(
+        json
+      )?.substring(0, 100)}`
+    );
+    return json;
+  }
+}
+
 
 export async function fetchAPIGatewayWrapper(details: DynamicFileModuleDetails, pageAndSingleComponentDetails: PageAndSingleComponentDetails) {
 
@@ -91,12 +166,17 @@ export async function fetchAPIGatewayWrapper(details: DynamicFileModuleDetails, 
 
         return await fetchAPI(details, endpoint, headers, pageAndSingleComponentDetails);
     } else if(cmsVariant === 'sanity') {
-      const projectId = process.env.PROJECT_ID || "5he8nsc5";
-      const defaultEndpoint = `https://${projectId}.api.sanity.io/v2023-08-01/graphql/production/default`;
-      const endpoint = CmsVariants.variants[cmsVariant].deliveryApiDomain || defaultEndpoint;
-      
+      const endpoint = await fetchAPIGatewayWrapperForSanity();
       log.trace(`${logPrefix()}[${pageAndSingleComponentDetails?.component.identifier}] fetchAPIGatewayWrapper - endpoint ::: ${endpoint}`);
 
       return await fetchAPI(details, endpoint, headers, pageAndSingleComponentDetails);
   }
+}
+
+export async function fetchAPIGatewayWrapperForSanity() {
+  const cmsVariant = GetCMS();
+  const projectId = process.env.PROJECT_ID || "5he8nsc5";
+  const defaultEndpoint = `https://${projectId}.api.sanity.io/v2023-08-01/graphql/production/default`;
+  const endpoint = CmsVariants.variants[cmsVariant].deliveryApiDomain || defaultEndpoint;
+  return endpoint;
 }
