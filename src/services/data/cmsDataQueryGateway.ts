@@ -180,3 +180,10 @@ export async function fetchAPIGatewayWrapperForSanity() {
   const endpoint = CmsVariants.variants[cmsVariant].deliveryApiDomain || defaultEndpoint;
   return endpoint;
 }
+
+export async function fetchAPIGatewayWrapperForSanityMutations() {
+  const projectId = process.env.PROJECT_ID || "5he8nsc5";
+  const defaultEndpoint = `https://${projectId}.api.sanity.io/v2023-08-01/data/mutate/production`;
+  const endpoint = defaultEndpoint;
+  return endpoint;
+}

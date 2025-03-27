@@ -8,4 +8,5 @@ export * from "./ui-tools";
 export * from "./multisite";
 export * from "./cms/sanity/sanityMappingUtils";
 export * from "./cms/sanity/sanityCommonSchema";
+export * from "./cms/sanity/sanityPageQuery";
 export * from "./component-tools/componentBoilerPlate";
