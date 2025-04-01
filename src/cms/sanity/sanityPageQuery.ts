@@ -37,6 +37,7 @@ export async function getPageByTitle(title: string, componentName: string): Prom
         failedToFind: false,
         queryString: pageQuery,
         siteId: "default-site",
+        theme: "default", // Added the required 'theme' property
     };
     try{
         log.info(`${logPrefix()} Starting upsert mutation...`);
