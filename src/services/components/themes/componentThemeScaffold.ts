@@ -5,19 +5,6 @@ import { getLogger } from "../../logging/LogConfig";
 
 const log = getLogger("services.components.themes.componentThemeScaffold");
 
-// async function testSitemapImport() {
-//   try {
-//     // @ts-ignore
-//     await import(`@conversiondigital/headless-basics-components/src/theme/default/components/sitemap/heartcore-mapping`);
-//     log.info(`${logPrefix()} Successfully imported from @conversiondigital/headless-basics-components/src/theme/default/components/sitemap/heartcore-mapping`);
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       log.error(`${logPrefix()} Failed to import from sitemap: ${error.message}`);
-//     } else {
-//       log.error(`${logPrefix()} Unknown error during sitemap import:`, error);
-//     }
-//   }
-// }
 
 /**
  * Retrieve the theme configuration for a given component.

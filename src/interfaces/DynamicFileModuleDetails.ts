@@ -36,5 +36,5 @@ export interface DynamicFileModuleDetails {
   view?: ViewFn; // This is the view that will be rendered for the component.
   useCache?: boolean;
 
-  siteId: string;
+  theme: string;
 }

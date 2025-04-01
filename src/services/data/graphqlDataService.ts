@@ -8,58 +8,6 @@ import { DynamicFileModuleDetails, QueryResult } from "../../interfaces/DynamicF
 
 export const log = getLogger("headless-data-lib.services.data.graphqlDataService");
 
-// export async function testSitemapImport() {
-//   const identifier = "sitemap";
-
-//   const pathsToTest = [
-//     // `@conversiondigital/headless-basics-components/theme/default/components/${identifier}`,
-//     `@conversiondigital/headless-basics-components/src/theme/default/components/${identifier}`,
-//     // `@conversiondigital/headless-basics-components/dist/theme/default/components/${identifier}`
-//   ];
-
-//   // try {
-//   //   // @ts-ignore
-//   //   const module = await import(`@conversiondigital/headless-basics-components/dist/theme/default/components/sitemap`);
-//   //   return module.default;
-//   // } catch (error) {
-//   //   if (error instanceof Error) {
-//   //     log.error(`${logPrefix()} 1 Failed to import from @conversiondigital/headless-basics-components/dist/theme/default/components/sitemap: ${error.message}`);
-//   //   } else {
-//   //     log.error(`${logPrefix()} 1a Failed to import from @conversiondigital/headless-basics-components/dist/theme/default/components/sitemap:`, error);
-//   //   }
-//   // }
-
-//   try {
-//     // @ts-ignore
-//     const module = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/sitemap`);
-//     log.trace(`${logPrefix()} Successfully imported from @conversiondigital/headless-basics-components/src/theme/default/components/sitemap`);
-//     const modulea = module.default;
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       log.error(`${logPrefix()} 2 Failed to import from @conversiondigital/headless-basics-components/src/theme/default/components/sitemap: ${error.message}`);
-//     } else {
-//       log.error(`${logPrefix()} 2a Failed to import from @conversiondigital/headless-basics-components/src/theme/default/components/sitemap:`, error);
-//     }
-//   }
-
-//   for (const path of pathsToTest) {
-//     log.trace(`${logPrefix()} Testing import path: ${path}`);
-//     try {
-//       const module = await import(`${path}`);
-//       log.trace(`${logPrefix()} Successfully imported from: ${path}`);
-//       return module.default;
-//     } catch (error) {
-//       if (error instanceof Error) {
-//         log.error(`${logPrefix()} Failed to import from ${path}: ${error.message}`);
-//       } else {
-//         log.error(`${logPrefix()} Failed to import from ${path}:`, error);
-//       }
-//     }
-//   }
-
-//   throw new Error(`${logPrefix()} All paths failed to import the sitemap module.`);
-// }
-
 export async function resolveModuleFileLocation(
   details: DynamicFileModuleDetails
 ): Promise<DynamicFileModuleDetails> {
@@ -68,20 +16,13 @@ export async function resolveModuleFileLocation(
     : "");
 
 
-  // testSitemapImport()
-
-  // Change this to however you obtain your "siteId".
-  // For example, an environment variable or another property in `details`.
-  const siteId = details?.siteId || process.env.SITE_ID || "default";
-
   details.cmsPrefix = cmsPrefix;
   const identifier = details?.identifier?.toLowerCase() || "";
 
   // const isSiteThemeSpecified = typeof process.env.SITE_THEME === 'undefined';
-  const siteTheme = process.env.SITE_THEME || "deep-purple";
+  const siteTheme = details?.theme || process.env.SITE_THEME || "deep-purple";
 
-  // First attempt: /theme/${siteId}/components/<identifier>
-  let primaryPath = `theme/${siteId}/components/${identifier}`;
+  let primaryPath = `theme/${siteTheme}/components/${identifier}`;
   // Fallback path: package location
   let siteThemefallbackPath = `@conversiondigital/headless-basics-components/src/theme/${siteTheme}/components/${identifier}`;
   let defaultFallbackPath = `@conversiondigital/headless-basics-components/src/theme/default/components/${identifier}`;
@@ -91,7 +32,7 @@ export async function resolveModuleFileLocation(
 
   log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}] Attempting primary path: ${primaryPath}`);
 
-  details = await extractOverrideTheme(details, siteId, identifier, primaryPath, siteThemefallbackPath, siteTheme, defaultFallbackPath);
+  details = await extractOverrideTheme(details, identifier, primaryPath, siteThemefallbackPath, siteTheme, defaultFallbackPath);
 
   // If we have a module, attempt to resolve the query
   if (details.moduleX !== null && typeof details.moduleX !== "undefined") {
@@ -99,10 +40,10 @@ export async function resolveModuleFileLocation(
     details.queryString = details.query ? details.query.toString() : "Unknown";
 
     if (details.queryString === "Unknown") {
-      log.error(`${logPrefix()}[${details.identifier}][siteId::${siteId}][cmsPrefix::${cmsPrefix}] query not found for ${details.identifier}`);
+      log.error(`${logPrefix()}[${details.identifier}][siteTheme::${siteTheme}][cmsPrefix::${cmsPrefix}] query not found for ${details.identifier}`);
     } else {
       details.failedToFind = false;
-      log.trace(`${logPrefix()}[${details.identifier}][siteId::${siteId}][cmsPrefix::${cmsPrefix}]  ::: [FOUND] ::: ${details.matchingPath}`);
+      log.trace(`${logPrefix()}[${details.identifier}][siteTheme::${siteTheme}][cmsPrefix::${cmsPrefix}]  ::: [FOUND] ::: ${details.matchingPath}`);
     }
   }
 
@@ -120,10 +61,10 @@ export async function resolveModuleFileLocation(
  * @param defaultFallbackPath 
  * @returns 
  */
-async function extractOverrideTheme(details: DynamicFileModuleDetails, siteId: string, identifier: string, primaryPath: string, siteThemefallbackPath: string, siteTheme: string, defaultFallbackPath: string) {
+async function extractOverrideTheme(details: DynamicFileModuleDetails, identifier: string, primaryPath: string, siteThemefallbackPath: string, siteTheme: string, defaultFallbackPath: string) {
   log.trace(`${logPrefix()}[${identifier}] Attempting primary path: ${primaryPath}`);
   try {
-    details.moduleX = await import(`theme/${siteId}/components/${identifier?.toLowerCase()}`).then((module) => module.default);
+    details.moduleX = await import(`theme/${siteTheme}/components/${identifier?.toLowerCase()}`).then((module) => module.default);
     details.matchingPath = primaryPath;
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -233,7 +174,7 @@ export async function getDynamicCmsDataViaCmsSelector(componentAndPageProps: Pag
     data: undefined,
     view: undefined,
     useCache: componentAndPageProps.component.useCache,
-    siteId: process.env.SITE_ID || "default",
+    theme: process.env.SITE_THEME || "default",
   }
 
   details = await resolveModuleFileLocation(details)
@@ -242,7 +183,7 @@ export async function getDynamicCmsDataViaCmsSelector(componentAndPageProps: Pag
   // let scenario = "variable-unprocessed"
   try {
     if (details.failedToFind) {
-      log.error(`${logPrefix()}[${details.identifier}][siteId::${details.siteId}][cmsPrefix::${details.cmsPrefix}] Failed to find the following module -- `, `${details.identifier} > ${ConfigKeysEnum.query}()`);
+      log.error(`${logPrefix()}[${details.identifier}][theme::${details.theme}][cmsPrefix::${details.cmsPrefix}] Failed to find the following module -- `, `${details.identifier} > ${ConfigKeysEnum.query}()`);
       return details;
     }
 
