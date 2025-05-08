@@ -73,6 +73,7 @@ export interface ComponentMetaData {
 }
 
 export interface SubComponentOutline {
+  _key?: string;
   order: unknown;
   __typename: string;
   id: string;

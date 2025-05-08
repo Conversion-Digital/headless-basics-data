@@ -22,9 +22,10 @@ export function extractComponentsFromSanityData(
     logger.trace(`${logPrefix()}[extractComponentsFromSanityData] found ${collection.length} items in ${source} for typename: ${typename}`)
     collection.forEach((page) => {
       if (!page?.components?.length) return
-      page.components.forEach((component: any) => {
-        const typeNameToMatch = component.__typename?.toLowerCase();
-        if (typeNameToMatch === typename?.toLowerCase()) {
+      page.components.forEach((component: any, index: number) => {
+        const typeNameRoot = typename?.toLowerCase() + (data?.sortOrder || 0);
+        const typeNameToMatch = component.__typename?.toLowerCase() + index;
+        if (typeNameToMatch === typeNameRoot) {
           log.trace(`${logPrefix()}[extractComponentsFromSanityData] found component for typename: ${typename} ::: ${component?.globalComponentSource?.__typename}`, component)
           if(component?.globalComponentSource?.__typename?.toLowerCase() === typename?.toLowerCase()) {
             foundComponents.push(component.globalComponentSource);
