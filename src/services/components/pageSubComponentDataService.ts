@@ -36,7 +36,7 @@ export async function loadSingleComponentGraphQLData(item: SubComponentOutline, 
   const component: IndividualComponentProps = initializeComponentProps(identifier, pageConstructionPropsClone);
   component.sortOrder = item.sortOrder;
   component.variableForQuery = pageConstructionPropsClone.pageIdentifier.backEndSlug;
-  component.id = item.id;
+  component.id = item?._key || item.id;
 
   const pageAndSingleComponentDetails : PageAndSingleComponentDetails = { component, page: pageConstructionPropsClone }
 
@@ -44,7 +44,6 @@ export async function loadSingleComponentGraphQLData(item: SubComponentOutline, 
 
   log.trace(`${logPrefix()}[${pageConstructionPropsClone.preliminarySlug}] > ${lookupComponentResult.matchingPath}`);
 
-  component.id = item.id;
   component.metaData = populateGraphqlMetaData(lookupComponentResult, item);
   component.data = lookupComponentResult.result;
   component.subComponentOutline = item;
@@ -98,6 +97,8 @@ export async function LoadAllSubComponentData(subComponentsListing: SubComponent
       if(item.__typename){
         const sortOrder = item.sortOrder ? item.sortOrder : 0;
         log.trace(`${logPrefix()}[LoadAllSubComponentData][2][${pageConstructionProps.preliminarySlug}][${sortOrder}] `, item.__typename?.toLowerCase());
+        console.log("🚀 ~ awaitPromise.all ~ item===>", item)
+
         const singleComponentResult: IndividualComponentProps | undefined = await loadSingleComponentGraphQLData(item, pageConstructionProps);
         if(singleComponentResult){
           const specialOrder = singleComponentResult?.data?.order ? singleComponentResult?.data?.order : 'Top'; // This is either Top or Bottom. It is used for special cases where the pages contain a mix of Fixed and Dynamic components
@@ -105,7 +106,7 @@ export async function LoadAllSubComponentData(subComponentsListing: SubComponent
           log.trace(`${logPrefix()}[LoadAllSubComponentData][3][${pageConstructionProps.preliminarySlug}][${sortOrder}][specialOrder: ${specialOrder}] ${singleComponentResult.id}`);
 
           item.order = specialOrder;
-          const property = item.__typename?.toLowerCase() +"-"+ sortOrder;
+          const property = item._key || item.__typename?.toLowerCase() +"-"+ sortOrder;
           singleComponentResult.id = property;
           singleComponentResult.sortOrder = sortOrder;
           componentsLoaded.push(singleComponentResult);
