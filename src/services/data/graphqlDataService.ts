@@ -117,6 +117,11 @@ async function extractSiteTheme(details: DynamicFileModuleDetails, siteThemefall
         details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/corporate1/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
         break;
+      case "harvard":
+        log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
+        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/harvard/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+        log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
+        break;
       case "default":
         details = await extractDefaultTheme(details);
         break;
