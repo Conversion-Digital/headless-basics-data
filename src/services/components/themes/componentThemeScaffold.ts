@@ -71,6 +71,11 @@ async function retrieveSiteThemeVariables(siteTheme: string, identifier: string,
 
     let fallbackVarsModule;
     switch (siteTheme) {
+      case "portfolio_b":
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} == portfolio_b MATCH - attempting to load variables`);
+        fallbackVarsModule = await import(`@conversiondigital/headless-basics-components/src/theme/portfolio_b/components/${identifier}/variables`);
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} == portfolio_b loaded variables`);
+        break;
       case "deep-purple":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load variables`);
         fallbackVarsModule = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${identifier}/variables`);
@@ -131,6 +136,11 @@ async function retrieveSiteThemeQuery(siteTheme: string, identifier: string, que
     }
 
     switch (siteTheme) {
+      case "portfolio_b":
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} == portfolio_b MATCH - attempting to load query`);
+        queryModule = await import(`@conversiondigital/headless-basics-components/src/theme/portfolio_b/components/${identifier}/${cmsPrefix}-query`);
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} == portfolio_b loaded query`);
+        break;
       case "deep-purple":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load query`);
         queryModule = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${identifier}/${cmsPrefix}-query`);
@@ -186,6 +196,11 @@ async function retrieveSiteThemeMapping(siteTheme: string, identifier: string, m
       return await retrieveDefaultMapping(mappingModule, identifier, cmsPrefix, componentName);
     }
     switch (siteTheme) {
+      case "portfolio_b":
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} == portfolio_b MATCH - attempting to load mapping`);
+        mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/portfolio_b/components/${identifier}/${cmsPrefix}-mapping`);
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} == portfolio_b loaded`);
+        break;
       case "deep-purple":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load mapping`);
         mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${identifier}/${cmsPrefix}-mapping`);

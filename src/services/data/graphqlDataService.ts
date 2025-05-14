@@ -97,6 +97,11 @@ async function extractSiteTheme(details: DynamicFileModuleDetails, siteThemefall
 
 
     switch(siteTheme){
+      case "portfolio_b":
+        log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == portfolio_b MATCH - attempting to load ${siteThemefallbackPath}`);
+          details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/portfolio_b/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+        log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == portfolio_b loaded ${siteThemefallbackPath}`);
+        break;
       case "deep-purple":
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load ${siteThemefallbackPath}`);
           details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
