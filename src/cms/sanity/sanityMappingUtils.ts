@@ -21,10 +21,21 @@ export function extractComponentsFromSanityData(
     if (!collection?.length) return
     logger.trace(`${logPrefix()}[extractComponentsFromSanityData] found ${collection.length} items in ${source} for typename: ${typename}`)
     collection.forEach((page) => {
-      if (!page?.components?.length) return
-      page.components.forEach((component: any, index: number) => {
+      if (!page?.components?.length) return;
+
+      // remove all components that are not the typename
+      const filteredComponents = page.components.filter((component: any) => {
+        const typeNameToMatch = component.__typename?.toLowerCase();
+        const typeNameRoot = typename?.toLowerCase();
+        return typeNameToMatch === typeNameRoot;
+      });
+
+      filteredComponents.forEach((component: any, index: number) => {
         const typeNameRoot = typename?.toLowerCase() + (data?.sortOrder || 0);
+        logger.trace(`${logPrefix()}[extractComponentsFromSanityData] looking for component with typename: ${typeNameRoot} in ${component?.__typename?.toLowerCase()}`)
         const typeNameToMatch = component.__typename?.toLowerCase() + index;
+        logger.trace(`${logPrefix()}[extractComponentsFromSanityData] looking for component with typename: ${typeNameToMatch} in ${component?.__typename?.toLowerCase()}`)
+        logger.trace(`${logPrefix()}[extractComponentsFromSanityData] typeNameToMatch: ${typeNameToMatch} typeNameRoot: ${typeNameRoot}`)
         if (typeNameToMatch === typeNameRoot) {
           log.trace(`${logPrefix()}[extractComponentsFromSanityData] found component for typename: ${typename} ::: ${component?.globalComponentSource?.__typename}`, component)
           if(component?.globalComponentSource?.__typename?.toLowerCase() === typename?.toLowerCase()) {
@@ -60,6 +71,6 @@ export function extractComponentsFromSanityData(
   }
 
   const matchingComponent = foundComponents[desiredSortOrder]
-
+  log.trace(`${logPrefix()}[motto][sanity-mapping] found length of components: ${foundComponents.length} for typename: ${typename}`)
   return matchingComponent
 }
