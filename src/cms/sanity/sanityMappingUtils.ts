@@ -8,7 +8,8 @@ export function extractComponentsFromSanityData(
   typename: string,
   logger = log,
   lookupPageAndHomepage: boolean = true,
-  lookupTypeStructure: string = ''
+  lookupTypeStructure: string = '',
+  desiredComponentToRetrieveSortOrder: number = 0,
 ) {
   if (!data) {
     logger.error(`${logPrefix()}[extractComponentsFromSanityData] no data found for typename: ${typename}`)
@@ -17,43 +18,28 @@ export function extractComponentsFromSanityData(
 
   const foundComponents: any[] = []
 
-  function pushFoundComponents(source: string, collection: any[]) {
-    if (!collection?.length) return
-    logger.trace(`${logPrefix()}[extractComponentsFromSanityData] found ${collection.length} items in ${source} for typename: ${typename}`)
-    collection.forEach((page) => {
-      if (!page?.components?.length) return;
+  function pushFoundComponents(source: string, collection: any[], desiredIndex: number = 0) {
+  if (!collection?.length) return;
 
-      // remove all components that are not the typename
-      const filteredComponents = page.components.filter((component: any) => {
-        const typeNameToMatch = component.__typename?.toLowerCase();
-        const typeNameRoot = typename?.toLowerCase();
-        return typeNameToMatch === typeNameRoot;
-      });
+  collection.forEach(page => {
+    const filtered = (page.components || [])
+      .filter((c: { __typename: string; }) => c.__typename?.toLowerCase() === typename.toLowerCase());
 
-      filteredComponents.forEach((component: any, index: number) => {
-        const typeNameRoot = typename?.toLowerCase() + (data?.sortOrder || 0);
-        logger.trace(`${logPrefix()}[extractComponentsFromSanityData] looking for component with typename: ${typeNameRoot} in ${component?.__typename?.toLowerCase()}`)
-        const typeNameToMatch = component.__typename?.toLowerCase() + index;
-        logger.trace(`${logPrefix()}[extractComponentsFromSanityData] looking for component with typename: ${typeNameToMatch} in ${component?.__typename?.toLowerCase()}`)
-        logger.trace(`${logPrefix()}[extractComponentsFromSanityData] typeNameToMatch: ${typeNameToMatch} typeNameRoot: ${typeNameRoot}`)
-        if (typeNameToMatch === typeNameRoot) {
-          log.trace(`${logPrefix()}[extractComponentsFromSanityData] found component for typename: ${typename} ::: ${component?.globalComponentSource?.__typename}`, component)
-          if(component?.globalComponentSource?.__typename?.toLowerCase() === typename?.toLowerCase()) {
-            foundComponents.push(component.globalComponentSource);
-            log.trace(`${logPrefix()}[extractComponentsFromSanityData] GLOBAL COMPONENT MATCHED :::: ${typename}`)
-          }else{
-            foundComponents.push(component);
-            log.trace(`${logPrefix()}[extractComponentsFromSanityData]  Local component MATCHED ${typename}`)
-          }
-        }
-      })
-    })
-  }
+    if (filtered[desiredIndex]) {
+      const comp = filtered[desiredIndex];
+      foundComponents.push(
+        comp.globalComponentSource?.__typename?.toLowerCase() === typename.toLowerCase()
+          ? comp.globalComponentSource
+          : comp
+      );
+    }
+  });
+}
 
   log.trace(`${logPrefix()}[extractComponentsFromSanityData] looking for ${typename} in lookupPageAndHomepage ::: ${lookupPageAndHomepage}`)
   if(lookupPageAndHomepage){
-    pushFoundComponents("allPage", data.allPage as any[])
-    pushFoundComponents("allHomepage", data.allHomepage as any[])
+    pushFoundComponents("allPage", data.allPage as any[], desiredComponentToRetrieveSortOrder)
+    pushFoundComponents("allHomepage", data.allHomepage as any[], desiredComponentToRetrieveSortOrder)
   }else if (lookupTypeStructure != ''){
     return data[lookupTypeStructure];
     // log.info(`${logPrefix()}[extractComponentsFromSanityData] looking for ${typename} in data[lookupTypeStructure] ::: ${data[lookupTypeStructure]}`)
