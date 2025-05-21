@@ -90,6 +90,11 @@ async function retrieveSiteThemeVariables(siteTheme: string, identifier: string,
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} MATCH - attempting to load `);
         fallbackVarsModule = await import(`@conversiondigital/headless-basics-components/src/theme/conversion/components/${identifier}/variables`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} loaded variables module`);
+        break;        
+      case "harvard":
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} MATCH - attempting to load `);
+        fallbackVarsModule = await import(`@conversiondigital/headless-basics-components/src/theme/harvard/components/${identifier}/variables`);
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Variables] Site Theme ::: ${siteTheme} loaded variables module`);
         break;
     }
 
@@ -156,6 +161,11 @@ async function retrieveSiteThemeQuery(siteTheme: string, identifier: string, que
         queryModule = await import(`@conversiondigital/headless-basics-components/src/theme/conversion/components/${identifier}/${cmsPrefix}-query`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} loaded query module`);
         break;
+        case "harvard":
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} MATCH - attempting to load @conversiondigital/headless-basics-components/src/theme/harvard/components/${identifier}/${cmsPrefix}-query `);
+        queryModule = await import(`@conversiondigital/headless-basics-components/src/theme/harvard/components/${identifier}/${cmsPrefix}-query`);
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][Query] Site Theme ::: ${siteTheme} loaded query module`);
+        break;
     }
   } catch (fallbackError) {
     log.trace(`${logPrefix()}[${identifier}] Site Theme :::: ${siteTheme} -- Fallback import failed for query - ${(fallbackError as Error)?.message}`);
@@ -214,6 +224,11 @@ async function retrieveSiteThemeMapping(siteTheme: string, identifier: string, m
       case "conversion":
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} MATCH - attempting to load mapping`);
         mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/conversion/components/${identifier}/${cmsPrefix}-mapping`);
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} loaded mapping module`);
+        break;     
+      case "harvard":
+        log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} MATCH - attempting to load mapping`);
+        mappingModule = await import(`@conversiondigital/headless-basics-components/src/theme/harvard/components/${identifier}/${cmsPrefix}-mapping`);
         log.trace(`${logPrefix()}[${identifier}][SITE-THEME][mapping] Site Theme ::: ${siteTheme} loaded mapping module`);
         break;
     }
