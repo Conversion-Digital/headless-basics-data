@@ -9,7 +9,8 @@
     "**/*.tsx",
     "**/*.js",
     "**/*.jsx",
-    "**/*.css"
+    "**/*.css",
+    "tsconfig.json"
   ],
   "version": "1.1.2",
   "author": "Conversion Digital",
