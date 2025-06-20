@@ -35,6 +35,7 @@ export async function loadSingleComponentGraphQLData(item: SubComponentOutline, 
   const identifier = item?.__typename?.toLowerCase();
   const component: IndividualComponentProps = initializeComponentProps(identifier, pageConstructionPropsClone);
   component.sortOrder = item.sortOrder;
+  log.info(`${logPrefix()}[loadSingleComponentGraphQLData][1][${pageConstructionPropsClone.preliminarySlug}] about to set variableForQuery `, item?.__typename?.toLowerCase());
   component.variableForQuery = pageConstructionPropsClone.pageIdentifier.backEndSlug;
   component.id = item?._key || item.id;
 
