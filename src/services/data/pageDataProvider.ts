@@ -20,27 +20,72 @@ import { BrowserUrl } from "../../interfaces/BrowserUrl";
 const log = getLogger("headless.pageDataProvider");
 
 
-// This function accepts the path segment of the Browser URL.
-// It will return the correct slug for the CMS and the language site.
-// browserSlug:  Is the browser URL not the CMS Url
-// Please Read: https://expiadev.atlassian.net/wiki/spaces/HP/pages/3692363790/Language+Sites+and+URL+Construction
-export async function browserUrlToCmsUrlConverter(browserSlug: string) : Promise<BrowserUrl> {
+/**
+ * Normalise a path so it *always* starts with a single “/”
+ * and has no trailing “/”. Example:
+ *   ""  → "/"
+ *   "/foo/" → "/foo"
+ *   "bar/baz" → "/bar/baz"
+ */
+const normalisePath = (value = "") =>
+  `/${value.replace(/^\/+|\/+$/g, "")}`;
 
-  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point1][${browserSlug}]`);
-  const languageSite: LanguageSite = await GetLanguageSiteByURL(browserSlug);
-  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point2][${browserSlug}] languageSite = `, languageSite);
-  const sitemapStructure = await collectSitemapNavigationStructure("sitemap", `pageDataProvider.browserUrlToCmsUrlConverter(${browserSlug})`);
-  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point3][${browserSlug}] sitemapStructure = `, sitemapStructure);
-  const match = sitemapStructure.find(
-    (page: SitemapQueryResult) => page.superAlias === "/" + browserSlug || page.url === "/" + browserSlug
+/**
+ * Search the sitemap for a matching entry and return its CMS slug
+ * (or `undefined` if nothing matches).
+ */
+function findCmsSlug(
+  browserSlug: string,
+  sitemap: SitemapQueryResult[],
+): string | undefined {
+  const target = normalisePath(browserSlug);
+
+  const match = sitemap.find(
+    (p) =>
+      normalisePath(p.superAlias) === target ||
+      normalisePath(p.url) === target,
   );
 
-  if (typeof (match) !== 'undefined') { // We have a super alias match
-    browserSlug = match.slug as string;
-  }else{
-    log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point4][${browserSlug}] No match found in sitemapStructure for slug: ${browserSlug}`);
+  return match?.slug as string | undefined;
+}
+
+/**
+ * Convert a browser URL slug into its CMS-side URL, plus the
+ * `LanguageSite` it belongs to.
+ */
+export async function browserUrlToCmsUrlConverter(
+  browserSlug: string,
+): Promise<BrowserUrl> {
+  log.info(
+    `${logPrefix()}[browserUrlToCmsUrlConverter][P1][${browserSlug}]`,
+  );
+
+  const languageSite: LanguageSite = await GetLanguageSiteByURL(
+    browserSlug,
+  );
+  log.info(
+    `${logPrefix()}[browserUrlToCmsUrlConverter][P2][${browserSlug}] languageSite = `,
+    languageSite,
+  );
+
+  const sitemap = await collectSitemapNavigationStructure(
+    "sitemap",
+    `pageDataProvider.browserUrlToCmsUrlConverter(${browserSlug})`,
+  );
+  log.info(
+    `${logPrefix()}[browserUrlToCmsUrlConverter][P3][${browserSlug}] sitemap = `,
+    sitemap,
+  );
+
+  const cmsSlug = findCmsSlug(browserSlug, sitemap);
+
+  if (!cmsSlug) {
+    log.info(
+      `${logPrefix()}[browserUrlToCmsUrlConverter][P4][${browserSlug}] No sitemap match`,
+    );
   }
-  return { cmsUrl: browserSlug, languageSite };
+
+  return { cmsUrl: cmsSlug ?? browserSlug, languageSite };
 }
 
 export async function collectDynamicPageData(pageConstruction: PageDefinition): Promise<PageBlueprint | null> {
