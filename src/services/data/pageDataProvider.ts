@@ -26,17 +26,19 @@ const log = getLogger("headless.pageDataProvider");
 // Please Read: https://expiadev.atlassian.net/wiki/spaces/HP/pages/3692363790/Language+Sites+and+URL+Construction
 export async function browserUrlToCmsUrlConverter(browserSlug: string) : Promise<BrowserUrl> {
 
-  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point1]`);
+  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point1][${browserSlug}]`);
   const languageSite: LanguageSite = await GetLanguageSiteByURL(browserSlug);
-  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point2] languageSite = `, languageSite);
+  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point2][${browserSlug}] languageSite = `, languageSite);
   const sitemapStructure = await collectSitemapNavigationStructure("sitemap", `pageDataProvider.browserUrlToCmsUrlConverter(${browserSlug})`);
-  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point3] sitemapStructure = `, sitemapStructure);
+  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point3][${browserSlug}] sitemapStructure = `, sitemapStructure);
   const match = sitemapStructure.find(
     (page: SitemapQueryResult) => page.superAlias === "/" + browserSlug || page.url === "/" + browserSlug
   );
 
   if (typeof (match) !== 'undefined') { // We have a super alias match
     browserSlug = match.slug as string;
+  }else{
+    log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point4][${browserSlug}] No match found in sitemapStructure for slug: ${browserSlug}`);
   }
   return { cmsUrl: browserSlug, languageSite };
 }

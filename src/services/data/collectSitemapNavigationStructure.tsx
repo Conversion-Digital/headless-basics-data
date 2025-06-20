@@ -14,7 +14,7 @@ export async function collectSitemapNavigationStructure(identifier: string = "si
   source += "> collectSitemapNavigationStructure";
 
   const cmsVariant = GetCMS();
-  log.info(`${logPrefix()} collectSitemapNavigationStructure > cmsVariant > `, cmsVariant);
+  log.info(`${logPrefix()} collectSitemapNavigationStructure > cmsVariant > ${cmsVariant}`);
 
   const component: IndividualComponentProps = initializeComponentProps(identifier);
   const pageIdentifier: PageIdentifier = {
@@ -30,7 +30,7 @@ export async function collectSitemapNavigationStructure(identifier: string = "si
 
   const navItems = await getDynamicCmsDataViaCmsSelector(page);
 
-  log.info(`${logPrefix()} collectSitemapNavigationStructure > navItems > `, navItems);
+  log.info(`${logPrefix()}[collectSitemapNavigationStructure][identifier :: ${identifier}][source: ${source}] > navItems > ${JSON.stringify(navItems)}`);
 
   return (navItems.result || []) as SitemapQueryResult[];
 }
