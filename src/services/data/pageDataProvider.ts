@@ -50,7 +50,7 @@ export async function collectDynamicPageData(pageConstruction: PageDefinition): 
   pageConstruction.languageSite = languageSite; // Override the default language site with the one found in the URL
   pageConstruction.source += ` > pageDataProvider.collectDynamicPageData(${cmsUrl})`;
 
-  log.trace(`${logPrefix()} collectDynamicPageData > pageConstruction.pageIdentifier.backEndSlug > `, cmsUrl);
+  log.info(`${logPrefix()} collectDynamicPageData > pageConstruction.pageIdentifier.backEndSlug > `, cmsUrl);
 
   const pageTypeResult = (await getPageTypeBySlug(pageConstruction));
 

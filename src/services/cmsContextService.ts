@@ -93,7 +93,7 @@ export async function getPageIdentifierBySlug(slug: any) {
         isDynamic: undefined,
         source: `getPageIdentifierBySlug(${slug})`
     }
-
+    log.info(`${logPrefix()}[getPageIdentifierBySlug] > cmsUrl: ${cmsUrl} > slug: ${slug}`);
     const resultPage = await getPageTypeBySlug(pageConstruction);
     log.trace(`${logPrefix()}[Point3] ${slug}`);
     const pageIdentifier = await GetPageIdentifier(resultPage?.contentTypeAlias);
