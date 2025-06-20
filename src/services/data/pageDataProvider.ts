@@ -26,11 +26,11 @@ const log = getLogger("headless.pageDataProvider");
 // Please Read: https://expiadev.atlassian.net/wiki/spaces/HP/pages/3692363790/Language+Sites+and+URL+Construction
 export async function browserUrlToCmsUrlConverter(browserSlug: string) : Promise<BrowserUrl> {
 
-  log.trace(`${logPrefix()}[Point1]`);
+  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point1]`);
   const languageSite: LanguageSite = await GetLanguageSiteByURL(browserSlug);
-  log.trace(`${logPrefix()}[Point2]`);
+  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point2] languageSite = `, languageSite);
   const sitemapStructure = await collectSitemapNavigationStructure("sitemap", `pageDataProvider.browserUrlToCmsUrlConverter(${browserSlug})`);
-  log.trace(`${logPrefix()}[Point3]`);
+  log.info(`${logPrefix()}[browserUrlToCmsUrlConverter][Point3] sitemapStructure = `, sitemapStructure);
   const match = sitemapStructure.find(
     (page: SitemapQueryResult) => page.superAlias === "/" + browserSlug || page.url === "/" + browserSlug
   );

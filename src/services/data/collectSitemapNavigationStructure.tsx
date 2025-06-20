@@ -6,6 +6,7 @@ import { initializeComponentProps } from "../components/componentConstructionPro
 import { IndividualComponentProps, PageAndSingleComponentDetails } from "../../interfaces/PageDefinition";
 import { PageIdentifier } from "../../interfaces/PageIdentifier";
 import { SitemapQueryResult } from "../../interfaces/DynamicFileModuleDetails";
+import { loadGetInitialProps } from "next/dist/shared/lib/utils";
 
 const log = getLogger("headless.pageDataProvider");
 
@@ -13,7 +14,7 @@ export async function collectSitemapNavigationStructure(identifier: string = "si
   source += "> collectSitemapNavigationStructure";
 
   const cmsVariant = GetCMS();
-  log.trace(`${logPrefix()} collectSitemapNavigationStructure > cmsVariant > `, cmsVariant);
+  log.info(`${logPrefix()} collectSitemapNavigationStructure > cmsVariant > `, cmsVariant);
 
   const component: IndividualComponentProps = initializeComponentProps(identifier);
   const pageIdentifier: PageIdentifier = {
@@ -28,6 +29,8 @@ export async function collectSitemapNavigationStructure(identifier: string = "si
   }
 
   const navItems = await getDynamicCmsDataViaCmsSelector(page);
+
+  log.info(`${logPrefix()} collectSitemapNavigationStructure > navItems > `, navItems);
 
   return (navItems.result || []) as SitemapQueryResult[];
 }
