@@ -20,7 +20,7 @@ export async function resolveModuleFileLocation(
   const identifier = details?.identifier?.toLowerCase() || "";
 
   // const isSiteThemeSpecified = typeof process.env.SITE_THEME === 'undefined';
-  const siteTheme = details?.theme || process.env.SITE_THEME || "deep-purple";
+  const siteTheme = details?.theme || process.env.SITE_THEME || "conversion";
 
   let primaryPath = `theme/${siteTheme}/components/${identifier}`;
   // Fallback path: package location
@@ -184,7 +184,7 @@ export async function getDynamicCmsDataViaCmsSelector(componentAndPageProps: Pag
     data: undefined,
     view: undefined,
     useCache: componentAndPageProps.component.useCache,
-    theme: process.env.SITE_THEME || "default",
+    theme: "conversion",
   }
 
   details = await resolveModuleFileLocation(details)

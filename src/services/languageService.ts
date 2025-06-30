@@ -35,8 +35,8 @@ export async function GetLanguageSiteByURL(cmsSlug:string):Promise<LanguageSite>
 
     log.trace('GetLanguageSiteByURL ', languageSite, cmsSlug);
 
-    if (!languageSite) {
-        throw new Error("Language site could not be determined");
-    }
-    return languageSite;
+    // if (!languageSite) {
+    //     throw new Error("Language site could not be determined");
+    // }
+    // return languageSite;
 }

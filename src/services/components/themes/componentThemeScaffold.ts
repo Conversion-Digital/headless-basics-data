@@ -14,7 +14,7 @@ export async function getThemeConfig(componentName: string): Promise<ThemeConfig
   const identifier = componentName?.toLowerCase() || "";
 
   const isSiteThemeSpecified = typeof process.env.SITE_THEME === 'undefined';
-  const siteTheme = process.env.SITE_THEME as string || "default";
+  const siteTheme = process.env.SITE_THEME as string || "conversion";
 
   log.trace(`${logPrefix()}[${identifier}][${cmsPrefix}][GETTHEME] Attempting to retrieve theme configuration for component '${componentName}'`);
 
