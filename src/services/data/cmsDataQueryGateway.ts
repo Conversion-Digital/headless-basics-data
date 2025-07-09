@@ -176,14 +176,16 @@ export async function fetchAPIGatewayWrapper(details: DynamicFileModuleDetails, 
 export async function fetchAPIGatewayWrapperForSanity() {
   const cmsVariant = GetCMS();
   const projectId = process.env.PROJECT_ID || "5he8nsc5";
-  const defaultEndpoint = `https://${projectId}.api.sanity.io/v2023-08-01/graphql/production/default`;
+  const dataSet = process.env.SANITY_DATASET || "production";
+  const defaultEndpoint = `https://${projectId}.api.sanity.io/v2023-08-01/graphql/${dataSet}/default`;
   const endpoint = CmsVariants.variants[cmsVariant].deliveryApiDomain || defaultEndpoint;
   return endpoint;
 }
 
 export async function fetchAPIGatewayWrapperForSanityMutations() {
   const projectId = process.env.PROJECT_ID || "5he8nsc5";
-  const defaultEndpoint = `https://${projectId}.api.sanity.io/v2023-08-01/data/mutate/production`;
+  const dataSet = process.env.SANITY_DATASET || "production";
+  const defaultEndpoint = `https://${projectId}.api.sanity.io/v2023-08-01/data/mutate/${dataSet}`;
   const endpoint = defaultEndpoint;
   return endpoint;
 }
