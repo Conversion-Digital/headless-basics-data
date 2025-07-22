@@ -16,6 +16,24 @@ import { INavItem } from "../../interfaces/nav";
 
 const log = getLogger("headless.pageLayoutDataCollector");
 
+/**
+ * Utility function to strip functions from objects for client-side serialization
+ */
+function stripFunctions(obj: any): any {
+  if (Array.isArray(obj)) {
+    return obj.map(stripFunctions);
+  } else if (obj && typeof obj === 'object') {
+    const newObj: any = {};
+    for (const key in obj) {
+      if (typeof obj[key] !== 'function') {
+        newObj[key] = stripFunctions(obj[key]);
+      }
+    }
+    return newObj;
+  }
+  return obj;
+}
+
 /*
   The purpose of this function is to gather the required data from the GraphQL layer for a particular page.
   We need to support two page layout types.
@@ -52,7 +70,7 @@ export async function collectAllPageData(pageConstructionProps: PageDefinition):
       breadcrumbItems: await getBreadcrumbStructures(pageConstructionProps) as any,
       footerItems: await getFooterStructures(pageConstructionProps),
       stickyNavItems: await getStickNavTopStructures(pageConstructionProps),
-      siteSettings: GetSite(),
+      siteSettings: stripFunctions(GetSite()),
       pageData: pageConstructionProps
   };
 }

@@ -62,6 +62,13 @@ export const internalUrl = defineField({
     fields: [
       defineField({
         name: 'label',
+        title: 'Link Label',
+        type: 'string'
+      }),
+      defineField({
+        name: 'text',
+        title: 'Link Text',
+        type: 'string'
         title: 'Label',
         type: 'string',
         validation: Rule => Rule.required()
@@ -69,6 +76,10 @@ export const internalUrl = defineField({
       defineField({
         name: 'url',
         title: 'URL',
+        type: 'string'
+      })
+    ]
+  })
         type: 'url'
       })
     ]

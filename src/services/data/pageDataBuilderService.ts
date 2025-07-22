@@ -46,6 +46,24 @@ export interface INewPageDataParams {
 }
 
 /**
+ * Utility function to strip functions from objects for client-side serialization
+ */
+function stripFunctions(obj: any): any {
+  if (Array.isArray(obj)) {
+    return obj.map(stripFunctions);
+  } else if (obj && typeof obj === 'object') {
+    const newObj: any = {};
+    for (const key in obj) {
+      if (typeof obj[key] !== 'function') {
+        newObj[key] = stripFunctions(obj[key]);
+      }
+    }
+    return newObj;
+  }
+  return obj;
+}
+
+/**
  * Builds page data with the new pipeline approach, including collecting any fixed or dynamic
  * subcomponent data that is relevant to the page.
  */
@@ -117,7 +135,7 @@ export async function buildPageDataWithNewPipeline(
   // Sort all components by their sortOrder
   components.sort((a, b) => a.sortOrder - b.sortOrder);
 
-  // (5) Return final blueprint
+  // (5) Return final blueprint with serializable siteSettings
   const pageBlueprint: PageBlueprint = {
     navItems: navItems as any,
     seoItems,
@@ -125,7 +143,7 @@ export async function buildPageDataWithNewPipeline(
     stickyNavItems,
     breadcrumbItems,
     components,
-    siteSettings: GetSite(),
+    siteSettings: stripFunctions(GetSite()),
     pageData: pageConstruction,
   };
   return pageBlueprint;
