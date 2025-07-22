@@ -54,3 +54,26 @@ export const internalUrl = defineField({
     type: "array",
     of: [{ type: "targetedLink" }],
   });
+
+  export const linkItem = defineType({
+    name: 'linkItem',
+    title: 'Link Item',
+    type: 'object',
+    fields: [
+      defineField({
+        name: 'label',
+        title: 'Link Label',
+        type: 'string'
+      }),
+      defineField({
+        name: 'text',
+        title: 'Link Text',
+        type: 'string'
+      }),
+      defineField({
+        name: 'url',
+        title: 'URL',
+        type: 'string'
+      })
+    ]
+  })

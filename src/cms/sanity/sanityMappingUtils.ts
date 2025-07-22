@@ -20,13 +20,17 @@ export function extractComponentsFromSanityData(
 
   function pushFoundComponents(source: string, collection: any[], desiredIndex: number = 0) {
   if (!collection?.length) return;
+  log.info(`${logPrefix()}[extractComponentsFromSanityData] pushing found components: ${collection.length} for typename: ${typename}`)
 
   collection.forEach(page => {
     const filtered = (page.components || [])
       .filter((c: { __typename: string; }) => c.__typename?.toLowerCase() === typename.toLowerCase());
+    log.info(`${logPrefix()}[extractComponentsFromSanityData] filtered: ${filtered.length} for typename: ${typename} and desiredIndex: ${desiredIndex}`)
 
     if (filtered[desiredIndex]) {
       const comp = filtered[desiredIndex];
+      log.info(`${logPrefix()}[extractComponentsFromSanityData] comp: ${comp} for typename: ${typename}`)
+
       foundComponents.push(
         comp.globalComponentSource?.__typename?.toLowerCase() === typename.toLowerCase()
           ? comp.globalComponentSource
@@ -42,7 +46,7 @@ export function extractComponentsFromSanityData(
     pushFoundComponents("allHomepage", data.allHomepage as any[], desiredComponentToRetrieveSortOrder)
   }else if (lookupTypeStructure != ''){
     return data[lookupTypeStructure];
-    // log.info(`${logPrefix()}[extractComponentsFromSanityData] looking for ${typename} in data[lookupTypeStructure] ::: ${data[lookupTypeStructure]}`)
+    //log.info(`${logPrefix()}[extractComponentsFromSanityData] looking for ${typename} in data[lookupTypeStructure] ::: ${data[lookupTypeStructure]}`)
   }
 
   if (!foundComponents.length) {
@@ -57,6 +61,6 @@ export function extractComponentsFromSanityData(
   }
 
   const matchingComponent = foundComponents[desiredSortOrder]
-  log.trace(`${logPrefix()}[motto][sanity-mapping] found length of components: ${foundComponents.length} for typename: ${typename}`)
+  log.info(`${logPrefix()}[motto][sanity-mapping] found length of components: ${foundComponents.length} for typename: ${typename}`)
   return matchingComponent
 }

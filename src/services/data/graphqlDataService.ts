@@ -99,27 +99,27 @@ async function extractSiteTheme(details: DynamicFileModuleDetails, siteThemefall
     switch(siteTheme){
       case "deep-purple":
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == deep-purple MATCH - attempting to load ${siteThemefallbackPath}`);
-          details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+          details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/deep-purple/components/${details.identifier.toLowerCase()}/index`).then((module) => module.default);
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} == deep-purple loaded ${siteThemefallbackPath}`);
         break;
       case "light-blue":
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
-        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/light-blue/components/${details.identifier.toLowerCase()}/index`).then((module) => module.default);
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
         break;
       case "corporate1":
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
-        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/corporate1/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/corporate1/components/${details.identifier.toLowerCase()}/index`).then((module) => module.default);
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
         break;
       case "conversion":
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
-        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/conversion/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/conversion/components/${details.identifier.toLowerCase()}/index`).then((module) => module.default);
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
         break;
       case "harvard":
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} MATCH - attempting to load ${siteThemefallbackPath}`);
-        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/harvard/components/${details.identifier.toLowerCase()}`).then((module) => module.default);
+        details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/harvard/components/${details.identifier.toLowerCase()}/index`).then((module) => module.default);
         log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][MATCH] Site Theme ::: ${siteTheme} loaded ${siteThemefallbackPath}`);
         break;
       case "default":
@@ -153,7 +153,7 @@ async function extractDefaultTheme(details: DynamicFileModuleDetails) {
   const currentPath = `@conversiondigital/headless-basics-components/src/theme/default/components/${details.identifier?.toLowerCase()}`;
   try {
     log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][DEFAULT THEME][191] Attempting default theme detection: ${currentPath}`);
-    details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/${details.identifier?.toLowerCase()}`).then((module) => module.default);
+    details.moduleX = await import(`@conversiondigital/headless-basics-components/src/theme/default/components/${details.identifier?.toLowerCase()}/index`).then((module) => module.default);
     details.matchingPath = currentPath;
     log.trace(`${logPrefix()}[${details.identifier?.toLowerCase()}][DEFAULT THEME][197] Default Theme loaded ${currentPath}`);
   } catch (fallbackError: unknown) {
