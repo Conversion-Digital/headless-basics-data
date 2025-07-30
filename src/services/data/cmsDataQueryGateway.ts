@@ -45,6 +45,19 @@ export async function fetchAPI(
       log.trace(`${logPrefix()}[${IndividualComponentProps?.component.identifier}] graphqlDataService - variables -- `, JSON.stringify(details.variables)  || " -- no variables", details.matchingPath);
     }
 
+    // Check if errors are only about missing _type properties, which we can handle gracefully
+    const isOnlyTypeErrors = json?.errors?.every((error: any) => 
+      error.message && error.message.includes('object is missing "_type" property')
+    );
+    
+    if (isOnlyTypeErrors) {
+      log.warn(`${logPrefix()}[${IndividualComponentProps?.component.identifier}] GraphQL _type errors detected, returning partial data:`, json?.errors);
+      // Return partial data if available, despite _type errors
+      if (json.data !== undefined && json.data !== null) {
+        return json.data;
+      }
+    }
+    
     throw new Error(`${logPrefix()}[${IndividualComponentProps?.component.identifier}][${IndividualComponentProps?.page?.preliminarySlug}][${IndividualComponentProps?.component?.identifier}][${IndividualComponentProps?.page?.source}] GRAPHQL ERRORS :::: ${JSON.stringify(json?.errors)} ::::: details.variables = ${JSON.stringify(details?.variables)}  /n/r  :::: /n/r   ::::: QUERY:::: ${details?.queryResult}`);
   }
 

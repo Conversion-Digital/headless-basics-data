@@ -27,7 +27,12 @@ export async function collectSitemapNavigationStructure(identifier: string = "si
     page: { pageIdentifier: pageIdentifier, isDynamic: false, source },
   }
 
-  const navItems = await getDynamicCmsDataViaCmsSelector(page);
-
-  return (navItems.result || []) as SitemapQueryResult[];
+  try {
+    const navItems = await getDynamicCmsDataViaCmsSelector(page);
+    return (navItems.result || []) as SitemapQueryResult[];
+  } catch (error) {
+    log.error(`${logPrefix()} collectSitemapNavigationStructure error:`, error);
+    // Return empty array as fallback to prevent app from crashing
+    return [];
+  }
 }
