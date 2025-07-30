@@ -29,10 +29,15 @@ export function extractComponentsFromSanityData(
 
     if (filtered[desiredIndex]) {
       const comp = filtered[desiredIndex];
-      log.info(`${logPrefix()}[extractComponentsFromSanityData] comp: ${comp} for typename: ${typename}`)
+      const globalComponentMatch = comp.globalComponentSource?.__typename?.toLowerCase()
+      log.debug(`${logPrefix()}[extractComponentsFromSanityData] comp: ${comp} for typename: ${typename}  GLOBAL :: ${globalComponentMatch}`);
 
+      if(globalComponentMatch === typename.toLowerCase()){
+        log.debug(`${logPrefix()}[extractComponentsFromSanityData] GLOBAL COMPONENT match for typename: ${typename} in source: ${source}`);
+      }
+      
       foundComponents.push(
-        comp.globalComponentSource?.__typename?.toLowerCase() === typename.toLowerCase()
+        globalComponentMatch === typename.toLowerCase()
           ? comp.globalComponentSource
           : comp
       );
